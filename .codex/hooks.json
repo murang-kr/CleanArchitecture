@@ -1,0 +1,67 @@
+{
+  "description": "프로젝트 로컬 Codex 하네스 — 작업 게이트, 개발 기록 인덱스, 편집 루프 가드, git 컨펌 게이트, 하네스 닥터.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/harness-doctor.js\"",
+            "timeout": 15,
+            "statusMessage": "하네스 닥터 검사 중"
+          },
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/development-record-load.js\"",
+            "timeout": 10,
+            "statusMessage": "개발 기록 인덱스 로드 중"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/inject-work-gate.js\"",
+            "timeout": 10,
+            "statusMessage": "작업 게이트 주입 중"
+          },
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/edit-loop-turn-bump.js\"",
+            "timeout": 10,
+            "statusMessage": "턴 카운터 갱신 중"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/git-commit-confirm.js\"",
+            "timeout": 10,
+            "statusMessage": "git 상태 변경 컨펌 게이트 확인 중"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "apply_patch|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/edit-loop-guard.js\"",
+            "timeout": 10,
+            "statusMessage": "편집 루프 가드 확인 중"
+          }
+        ]
+      }
+    ]
+  }
+}

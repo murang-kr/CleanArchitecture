@@ -1,0 +1,6 @@
+{
+  "oracle": {
+    "compile": "/Applications/Unity/Hub/Editor/6000.3.20f1/Unity.app/Contents/MacOS/Unity -batchmode -quit -projectPath /Users/murang/Developer/Unity/CleanArchitecture -logFile -",
+    "test": "/Applications/Unity/Hub/Editor/6000.3.20f1/Unity.app/Contents/MacOS/Unity -batchmode -projectPath /Users/murang/Developer/Unity/CleanArchitecture -runTests -testPlatform EditMode -testResults /Users/murang/Developer/Unity/CleanArchitecture/Logs/EditModeTestResults.xml -logFile -"
+  }
+}
