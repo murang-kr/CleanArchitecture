@@ -1,6 +1,6 @@
 # CleanArchitecture
 
-> 프로젝트 관련 문서는 [`docs/`](docs/)에서 관리한다.
+> 프로젝트 관련 문서는 [`Docs/`](Docs/)에서 관리한다.
 
 Unity에서 모듈형 Clean Architecture를 학습하고 검증하기 위한 2D 프로젝트다. 현재는 Unity 6의 2D URP 템플릿을 생성한 초기 상태이며, 게임 기능과 세부 아키텍처는 아직 구현되지 않았다.
 
@@ -10,7 +10,7 @@ Unity에서 모듈형 Clean Architecture를 학습하고 검증하기 위한 2D 
 2. Assembly Definition으로 모듈 간 의존 방향을 컴파일 단계에서 검증한다.
 3. 실제 기능을 구현하면서 구조의 테스트 가능성과 교체 가능성을 확인한다.
 
-현재 확정되지 않은 게임 장르, 기능 목록, DI·반응형·비동기 라이브러리는 이 문서에서 채택된 것으로 간주하지 않는다. 패키지나 구조를 확정할 때 `Packages/manifest.json`, 이 문서, [`docs/Tech-Stack.md`](docs/Tech-Stack.md)를 같은 작업에서 갱신한다.
+현재 확정되지 않은 게임 장르, 기능 목록, DI·반응형·비동기 라이브러리는 이 문서에서 채택된 것으로 간주하지 않는다. 패키지나 구조를 확정할 때 `Packages/manifest.json`, 이 문서, [`Docs/Tech-Stack.md`](Docs/Tech-Stack.md)를 같은 작업에서 갱신한다.
 
 ## 현재 프로젝트 구조
 
@@ -58,4 +58,4 @@ Assets/
 - 로컬 IDE 설정: VS Code
 - 저장소: https://github.com/murang-kr/CleanArchitecture
 
-컴파일·테스트 명령과 패키지 버전은 [`docs/Tech-Stack.md`](docs/Tech-Stack.md)를 기준으로 한다.
+컴파일·테스트 명령과 패키지 버전은 [`Docs/Tech-Stack.md`](Docs/Tech-Stack.md)를 기준으로 한다.

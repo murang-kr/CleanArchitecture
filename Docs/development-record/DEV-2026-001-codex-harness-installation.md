@@ -21,7 +21,7 @@ tags: [tooling, codex, git]
 - 로컬 Git 저장소와 public GitHub 원격 저장소가 연결돼 있다.
 - Unity 생성물을 제외하는 `.gitignore`가 있다.
 - 템플릿의 `AGENTS.md`, 스킬, 훅, 개발 기록 문서가 설치돼 있다.
-- 프로젝트 실제 상태를 반영한 `README.md`, `docs/Tech-Stack.md`, 하네스 바인딩이 있다.
+- 프로젝트 실제 상태를 반영한 `README.md`, `Docs/Tech-Stack.md`, 하네스 바인딩이 있다.
 - Unity batch mode 컴파일이 종료 코드 `0`으로 통과한다.
 
 # 제약사항
@@ -42,11 +42,12 @@ tags: [tooling, codex, git]
 |---|---|---|---|
 | 21:12 | 로컬 Git 저장소 초기화 | 성공, `main` 브랜치 생성 | `git rev-parse --show-toplevel` |
 | 21:15 | public GitHub 저장소 생성 및 `origin` 연결 | 성공, `murang-kr/CleanArchitecture`, `PUBLIC` | `gh repo view`, `git remote get-url origin` |
-| 21:18 | 프로젝트 로컬 하네스와 문서 설치 | 성공 | `.agents/`, `.codex/`, `docs/` |
+| 21:18 | 프로젝트 로컬 하네스와 문서 설치 | 성공 | `.agents/`, `.codex/`, `Docs/` |
 | 21:18 | 템플릿 일치·JSON·JavaScript·Git ignore 검사 | 성공 | `TEMPLATE_FILES_MATCH`, `NO_DS_STORE`, `JSON_OK` |
 | 21:18 | Unity batch mode 컴파일 | 대기, GUI 에디터가 동일 프로젝트를 열어 실행 차단 | Unity 종료 코드 1, `Multiple Unity instances cannot open the same project` |
 | 21:26 | Unity batch mode 컴파일 재실행 | 성공 | 종료 코드 0, `Tundra build success`, `Exiting batchmode successfully now!` |
 | 21:31 | public push 전 보안 검사 | PS4 자동 생성 passcode를 제거하고 초기 커밋 교체 결정 | `ProjectSettings/ProjectSettings.asset` |
+| 22:21 | 문서 디렉터리 표기 정규화 | 소문자 문서 디렉터리를 `Docs/`로 변경하고 참조 동기화 | `README.md`, `AGENTS.md`, `.codex/hooks/development-record-load.js` |
 
 # 발견 사항
 
@@ -83,10 +84,11 @@ tags: [tooling, codex, git]
 - Unity용 `.gitignore` 생성
 - `AGENTS.md`, `.agents/skills/`, `.codex/hooks.json`, `.codex/hooks/` 설치
 - `.codex/harness-bindings.json` 생성
-- `README.md`, `docs/Tech-Stack.md`를 실제 프로젝트 상태로 작성
+- `README.md`, `Docs/Tech-Stack.md`를 실제 프로젝트 상태로 작성
 - 개발 기록 형식과 인덱스 설치
 - public GitHub 저장소 생성 및 `origin` 연결
 - 사용하지 않는 PS4 passcode를 공개 전 제거
+- 문서 디렉터리와 관련 경로를 `Docs/` 표기로 통일
 
 # 검증
 

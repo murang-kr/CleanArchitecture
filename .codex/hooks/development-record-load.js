@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 // SessionStart 훅: 프로젝트별 개발 기록 인덱스 주입.
-// 프로젝트 루트의 docs/development-record/Index.md를 컨텍스트에 주입한다.
+// 프로젝트 루트의 Docs/development-record/Index.md를 컨텍스트에 주입한다.
 // 세부 기록의 생성·갱신 정책은 프로젝트 AGENTS.md의 "개발 기록 정책" 절에 있다.
 // 계약: 내부 오류는 삼키고 항상 exit 0 (fail-open).
 const fs = require('fs'), path = require('path');
 try {
   const projectRoot = path.resolve(__dirname, '..', '..');
-  const recordDir = path.join(projectRoot, 'docs', 'development-record');
+  const recordDir = path.join(projectRoot, 'Docs', 'development-record');
   const indexPath = path.join(recordDir, 'Index.md');
-  const formatPath = path.join(projectRoot, 'docs', 'Development-Record-Format.md');
+  const formatPath = path.join(projectRoot, 'Docs', 'Development-Record-Format.md');
 
   const formatWarning = fs.existsSync(formatPath)
     ? ''

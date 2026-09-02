@@ -10,9 +10,9 @@
 
 ## 개발 기록
 
-- 위치: `docs/development-record/`
-- 공용 포맷: `docs/Development-Record-Format.md`
-- 인덱스: `docs/development-record/Index.md`
+- 위치: `Docs/development-record/`
+- 공용 포맷: `Docs/Development-Record-Format.md`
+- 인덱스: `Docs/development-record/Index.md`
 - 과거 맥락은 세션 시작 훅이 주입한 `Index.md`에서 찾고 필요한 기록만 읽는다. 기록의 경로·심볼·설정은 현재 코드로 재검증한다.
 - 구현, 버그 수정, 구조·설정 변경, 재사용 가치가 있는 조사·진단은 공용 포맷으로 기록한다. 단순 질의응답·상태 확인·사소한 수정은 생략한다.
 - 같은 사용자 목표의 연속 작업은 기존 기록을 갱신한다. 완료 시 상태·결과와 `Index.md`의 한 줄 포인터를 함께 갱신한다.
