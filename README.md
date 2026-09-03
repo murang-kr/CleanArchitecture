@@ -37,9 +37,9 @@ Unity 기반 **2D 메트로베니아(Metroidvania)** 게임을 만들면서 모�
 
 ---
 
-## 디렉터리 구조 (제안)
+## 디렉터리 구조 (검증 중)
 
-> ⚠️ 아직 **설계 전 단계의 제안**이다. 1순위 목표의 결과물로 확정되며, 확정 시 이 섹션을 갱신한다.
+> Player 이동 세로 슬라이스로 아래 계층과 의존 방향을 먼저 검증하고 있다. 모든 Feature의 빈 계층을 미리 만들지 않고, 실제 유스케이스가 생길 때 필요한 계층만 추가한다.
 
 ```
 Assets/
@@ -86,6 +86,11 @@ Infrastructure ──▶ Application ──▶ Domain
 
 Domain은 참조가 하나도 없다. `Infrastructure`와 `Presentation`은 서로를 보지 못하며, `View`만 `Presentation`을 참조한다. **Domain·Application은 VContainer도 모른다** — 특성 없는 순수 생성자로 두고 `Installer`가 조립한다.
 
+**현재 구현 상태**
+
+- `Player` 이동·점프 세로 슬라이스가 Domain부터 View까지 구현돼 있다.
+- `Player.Domain`, `Player.Application`, `Player.Presentation`은 `noEngineReferences: true`로 Unity API 의존을 차단한다.
+- `Core.Installer`가 VContainer composition root를 소유하며 `ArchitectureSandbox` 씬에서 Player Feature를 조립한다.
+- 아직 공통 계약이 없으므로 `Shared`는 생성하지 않았다.
+
 > 새 `.cs` 파일을 대량 추가한 뒤 참조 측에서 CS0246이 나면, 코드를 의심하기 전에 `CompilationPipeline.GetAssemblies().sourceFiles`를 확인한다. Unity 에셋 DB가 일부 파일을 컴파일 소스 목록에서 누락하는 경우가 있고, **에디터 재시작 외에는 복구되지 않는다.**
-
-

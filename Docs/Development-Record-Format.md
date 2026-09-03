@@ -2,13 +2,21 @@
 id: DEV-YYYY-NNN
 title: 작업 제목
 status: planned
+verification_tier:
+plan_review: pending
 date: YYYY-MM-DD
+approved_at:
+completed_at:
 unity_version:
 platform:
 related_issue:
 related_commit:
 tags: []
 ---
+
+> 이 문서는 승인된 계획, 실행 기록, 검증, 최종 결과를 함께 관리하는 단일 정본이다. 별도 계획 문서를 만들지 않는다.
+>
+> `status`는 `planned → approved → in_progress → completed` 순서로 갱신한다. 진행을 멈춰야 하면 `blocked`와 재개 조건을 기록한다. `plan_review`는 `pending`, `okay`, `blocked`, `not_required` 중 하나를 사용한다.
 
 # 목표
 
@@ -30,9 +38,45 @@ tags: []
 
 # 계획
 
-1. 실행 전 작성한 계획
+1. 실행 전 승인받을 구현 순서
 2. 조사하거나 변경할 순서
-3. 검증 방법
+3. 각 단계의 완료 기준
+
+## 변경 예정 파일
+
+- 파일 경로와 파일별 변경 내용
+- 새 파일이면 같은 관심사의 기존 소유자와 신설 사유
+
+## 영향 범위
+
+- 직접 수정하는 시스템·기능
+- 직접 수정하지 않지만 동작이 달라지는 시스템·기능
+
+## 범위 제외 (Non-goals)
+
+- 이번 작업에서 명시적으로 하지 않을 것
+
+## 구조·소유권 점검
+
+- YAGNI·KISS·DRY·SRP 점검 결과
+- 기존 관심사 소유자 검색 근거
+- 기존 시스템 확장 또는 신규 소유자 생성 판단과 이유
+- 구조·네이밍 컨벤션 결정
+
+## 계획 검토
+
+- `plan-critic` 판정과 근거
+- 해소한 블로커 또는 남은 `[미해소: 질문]`
+
+## 검증 계획
+
+- 증거 티어와 하향 금지 조건
+- 실행할 컴파일·테스트·로그 명령
+- 요구사항별 자동 검증 방법
+
+## 사람 검수 항목
+
+- UX·룩앤필·체감처럼 사람의 지각 판단이 필요한 항목
 
 # 실행 기록
 
