@@ -1,0 +1,17 @@
+{
+  "name": "CleanArchitecture.Player.Infrastructure",
+  "rootNamespace": "CleanArchitecture.Player.Infrastructure",
+  "references": [
+    "CleanArchitecture.Player.Application",
+    "CleanArchitecture.Player.Domain"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

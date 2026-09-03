@@ -1,0 +1,16 @@
+{
+  "name": "CleanArchitecture.Player.Presentation",
+  "rootNamespace": "CleanArchitecture.Player.Presentation",
+  "references": [
+    "CleanArchitecture.Player.Application"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}

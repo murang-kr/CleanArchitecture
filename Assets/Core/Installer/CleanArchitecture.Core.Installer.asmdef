@@ -1,0 +1,19 @@
+{
+  "name": "CleanArchitecture.Core.Installer",
+  "rootNamespace": "CleanArchitecture.Core.Installer",
+  "references": [
+    "CleanArchitecture.Player.Infrastructure",
+    "CleanArchitecture.Player.View",
+    "CleanArchitecture.Player.Installer",
+    "VContainer"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

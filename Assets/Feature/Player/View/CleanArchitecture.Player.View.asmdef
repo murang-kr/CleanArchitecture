@@ -1,0 +1,17 @@
+{
+  "name": "CleanArchitecture.Player.View",
+  "rootNamespace": "CleanArchitecture.Player.View",
+  "references": [
+    "CleanArchitecture.Player.Presentation",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
