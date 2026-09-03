@@ -8,3 +8,4 @@
 -->
 
 - [Git 저장소 및 Codex 로컬 하네스 설치](DEV-2026-001-codex-harness-installation.md) — public Git 저장소 연결, 하네스 설치, Unity batch mode 컴파일 검증을 완료했다.
+- [Unity 기반 패키지 스택 설치](DEV-2026-002-package-stack-installation.md) — NuGetForUnity, R3, UniTask, VContainer, Unity CLI Loop, UI Toolkit과 Localization을 설치·확인했다.

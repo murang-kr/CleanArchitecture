@@ -8,6 +8,10 @@
 [Uu]ser[Ss]ettings/
 [Mm]emoryCaptures/
 [Rr]ecordings/
+**/.uloop/*
+!**/.uloop/project-runner-pin.json
+Assets/Packages/
+Assets/Packages.meta
 
 # IDE-generated files
 .vs/
