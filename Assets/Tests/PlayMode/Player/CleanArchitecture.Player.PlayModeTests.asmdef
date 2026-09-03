@@ -1,0 +1,25 @@
+{
+  "name": "CleanArchitecture.Player.PlayModeTests",
+  "rootNamespace": "CleanArchitecture.Player.Tests.PlayMode",
+  "references": [
+    "CleanArchitecture.Core.Installer",
+    "CleanArchitecture.Player.Domain",
+    "CleanArchitecture.Player.Infrastructure",
+    "CleanArchitecture.Player.Presentation",
+    "VContainer"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}
