@@ -17,23 +17,56 @@ try {
     path.join(projectRoot, '.codex', 'harness-bindings.json'),
     path.join(projectRoot, '.claude', 'harness-bindings.json')
   ];
+  const warnings = [];
   const bindingsPath = candidates.find(p => fs.existsSync(p));
   if (!bindingsPath) {
-    console.log('[harness-doctor] 이 프로젝트에 하네스 바인딩(.codex/harness-bindings.json)이 없다. 완료 증거 계약이 쓸 기계 오라클(컴파일·테스트 명령)이 미정의 상태다 — 구현 작업을 시작하기 전에 사용자에게 이 프로젝트의 컴파일·테스트 명령을 확인해 바인딩 파일을 생성하라.');
-    process.exit(0);
+    warnings.push('하네스 바인딩(.codex/harness-bindings.json)이 없어 컴파일·테스트 명령이 미정의 상태다');
+  } else {
+    const bindings = JSON.parse(fs.readFileSync(bindingsPath, 'utf8'));
+    const missing = [];
+    for (const [name, cmd] of Object.entries(bindings.oracle || {})) {
+      const exe = String(cmd).trim().split(/\s+/)[0];
+      if (!exe) continue;
+      const probe = process.platform === 'win32'
+        ? spawnSync('where', [exe], { stdio: 'ignore' })
+        : spawnSync('which', [exe], { stdio: 'ignore' });
+      if (probe.status !== 0) missing.push(`${name}: ${cmd}`);
+    }
+    if (missing.length) {
+      warnings.push(`PATH에서 찾을 수 없는 검증 도구: ${missing.join(' / ')}`);
+    }
   }
-  const bindings = JSON.parse(fs.readFileSync(bindingsPath, 'utf8'));
-  const missing = [];
-  for (const [name, cmd] of Object.entries(bindings.oracle || {})) {
-    const exe = String(cmd).trim().split(/\s+/)[0];
-    if (!exe) continue;
-    const probe = process.platform === 'win32'
-      ? spawnSync('where', [exe], { stdio: 'ignore' })
-      : spawnSync('which', [exe], { stdio: 'ignore' });
-    if (probe.status !== 0) missing.push(`${name}: ${cmd}`);
+
+  const expectedHooksPath = path.join(projectRoot, '.githooks');
+  const hooksPathProbe = spawnSync(
+    'git',
+    ['config', '--local', '--get', 'core.hooksPath'],
+    { cwd: projectRoot, encoding: 'utf8' }
+  );
+  const configuredHooksPath = hooksPathProbe.status === 0
+    ? hooksPathProbe.stdout.trim()
+    : '';
+  const resolvedHooksPath = configuredHooksPath
+    ? path.resolve(projectRoot, configuredHooksPath)
+    : '';
+  if (resolvedHooksPath !== expectedHooksPath) {
+    warnings.push('커밋 메시지 검사를 위해 `git config --local core.hooksPath .githooks` 설정이 필요하다');
   }
-  if (missing.length) {
-    console.log(`[harness-doctor] 하네스 바인딩에 정의된 도구를 PATH에서 찾을 수 없다: ${missing.join(' / ')}. 해당 오라클이 필요한 작업 전에 사용자에게 알려라.`);
+
+  const commitMessageHook = path.join(expectedHooksPath, 'commit-msg');
+  const commitMessageLint = path.join(projectRoot, '.codex', 'hooks', 'commit-message-lint.js');
+  if (!fs.existsSync(commitMessageHook) || !fs.existsSync(commitMessageLint)) {
+    warnings.push('커밋 메시지 훅 또는 검사기 파일이 없다');
+  } else if (process.platform !== 'win32') {
+    try {
+      fs.accessSync(commitMessageHook, fs.constants.X_OK);
+    } catch {
+      warnings.push('.githooks/commit-msg에 실행 권한이 없다');
+    }
+  }
+
+  if (warnings.length) {
+    console.log(`[harness-doctor] ${warnings.join(' / ')}. 필요한 작업 전에 사용자에게 알려라.`);
   }
 } catch {}
 process.exit(0);

@@ -11,3 +11,4 @@
 - [Unity 기반 패키지 스택 설치](DEV-2026-002-package-stack-installation.md) — NuGetForUnity, R3, UniTask, VContainer, Unity CLI Loop, UI Toolkit과 Localization을 설치·확인했다.
 - [Player 이동 Clean Architecture 세로 슬라이스](DEV-2026-003-player-walking-skeleton.md) — Player 이동·점프를 6계층과 VContainer로 조립하고 EditMode 8개·PlayMode 1개 테스트로 검증했다.
 - [계획과 개발 기록 정본 통합](DEV-2026-004-document-source-unification.md) — 별도 계획 문서를 없애고 승인 계획부터 완료 결과까지 DEV 기록 하나에서 관리하도록 하네스를 정리했다.
+- [커밋 메시지 규칙 하네스](DEV-2026-005-commit-message-policy-harness.md) — 명령형 제목과 본문 구조 규칙을 문서화하고 Git commit-msg 훅으로 자동 검사한다.
