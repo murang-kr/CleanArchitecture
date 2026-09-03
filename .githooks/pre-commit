@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+
+project_root=$(git rev-parse --show-toplevel)
+exec node "$project_root/.codex/hooks/architecture-change-guard.js"

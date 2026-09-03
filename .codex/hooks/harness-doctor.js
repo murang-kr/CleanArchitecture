@@ -50,18 +50,39 @@ try {
     ? path.resolve(projectRoot, configuredHooksPath)
     : '';
   if (resolvedHooksPath !== expectedHooksPath) {
-    warnings.push('커밋 메시지 검사를 위해 `git config --local core.hooksPath .githooks` 설정이 필요하다');
+    warnings.push('Git 훅 검사를 위해 `git config --local core.hooksPath .githooks` 설정이 필요하다');
   }
 
-  const commitMessageHook = path.join(expectedHooksPath, 'commit-msg');
-  const commitMessageLint = path.join(projectRoot, '.codex', 'hooks', 'commit-message-lint.js');
-  if (!fs.existsSync(commitMessageHook) || !fs.existsSync(commitMessageLint)) {
-    warnings.push('커밋 메시지 훅 또는 검사기 파일이 없다');
-  } else if (process.platform !== 'win32') {
-    try {
-      fs.accessSync(commitMessageHook, fs.constants.X_OK);
-    } catch {
-      warnings.push('.githooks/commit-msg에 실행 권한이 없다');
+  const requiredHookFiles = [
+    ['커밋 메시지 훅', path.join(expectedHooksPath, 'commit-msg'), true],
+    ['구조 변경 훅', path.join(expectedHooksPath, 'pre-commit'), true],
+    [
+      '커밋 메시지 검사기',
+      path.join(projectRoot, '.codex', 'hooks', 'commit-message-lint.js'),
+      false
+    ],
+    [
+      '구조 변경 분류기',
+      path.join(projectRoot, '.codex', 'hooks', 'architecture-change-guard.js'),
+      false
+    ],
+    [
+      '아키텍처 정합성 검사기',
+      path.join(projectRoot, '.codex', 'hooks', 'architecture-doc-check.js'),
+      false
+    ]
+  ];
+  for (const [label, file, executable] of requiredHookFiles) {
+    if (!fs.existsSync(file)) {
+      warnings.push(`${label} 파일이 없다`);
+      continue;
+    }
+    if (executable && process.platform !== 'win32') {
+      try {
+        fs.accessSync(file, fs.constants.X_OK);
+      } catch {
+        warnings.push(`${path.relative(projectRoot, file)}에 실행 권한이 없다`);
+      }
     }
   }
 

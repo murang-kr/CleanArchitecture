@@ -8,7 +8,7 @@
 
 `commit`, `push`, `reset`, `revert`는 명령별 사용자 승인이 필요하다. `GIT_CONFIRMED` 마커는 사용자가 명시적으로 승인한 직후 그 명령 한 건에만 사용하며, 승인 없이 붙이거나 다음 명령으로 승인을 이월하지 않는다.
 
-새 커밋 메시지는 `Docs/Commit-Message-Policy.md`를 따른다. 자동 검사 실패를 `--no-verify`로 우회하지 않으며, 필요한 규칙 변경은 정본 문서와 검사기를 함께 갱신한다.
+새 커밋 메시지는 `Docs/Commit-Message-Policy.md`를 따른다. Git 훅 자동 검사 실패를 `--no-verify`로 우회하지 않으며, 필요한 규칙 변경은 정본 문서와 검사기를 함께 갱신한다.
 
 ## 개발 기록
 
@@ -23,6 +23,14 @@
 - 개발 기록은 승인된 계획, 실행 기록, 검증, 최종 결과를 함께 보관하는 단일 정본이다. 별도 계획 문서를 만들지 않는다.
 - 같은 사용자 목표의 연속 작업은 기존 기록을 갱신한다. 계획 승인 시 기록을 생성하거나 `in_progress`로 갱신하고, 완료 시 상태·결과와 `Index.md`의 한 줄 포인터를 함께 갱신한다.
 - `Index.md`에는 링크와 한 줄 요약만 둔다. 긴 로그·생성물은 별도 파일로 보관하고 상대경로로 연결한다.
+
+## 아키텍처 문서
+
+- 상세 아키텍처의 정본은 `Docs/Architecture.md`다. 현재 코드와 asmdef에서 확인한 구조만 기록하고 예정 구조는 현재 구조와 명확히 분리한다.
+- asmdef 추가·삭제·이름·`references`·`noEngineReferences`, 계층 책임이나 주요 타입 소유권, Feature 간 의존, Installer·composition root, 주요 계층 간 런타임 흐름을 변경하면 같은 작업에서 `Docs/Architecture.md`를 갱신한다.
+- `pre-commit`은 asmdef 변경, Core·Feature 타입 추가·삭제·이동, Installer 변경, `ArchitectureSandbox` 씬 변경을 구조 변경으로 감지하고 `Docs/Architecture.md`의 동시 stage를 요구한다. 문서가 staged되면 asmdef 노드·간선·엔진 참조 계약과 로컬 링크를 staged snapshot 기준으로 검사한다.
+- 일반 메서드 본문 수정의 의미 변화는 기계적으로 판별하지 않는다. 계층 책임, Feature 의존, composition 또는 주요 런타임 흐름에 영향이 있는지는 계획·검증 단계에서 판단한다.
+- 계획과 완료 검증에서 위 변경 여부를 확인하고, 영향이 있으면 개발 기록에 아키텍처 문서 변경과 실제 코드 대조 근거를 남긴다.
 
 ## 위임
 
