@@ -37,56 +37,11 @@ Unity 기반 **2D 메트로베니아(Metroidvania)** 게임을 만들면서 모�
 
 ---
 
-## 디렉터리 구조 (검증 중)
+## 아키텍처
 
-> Player 이동 세로 슬라이스로 아래 계층과 의존 방향을 먼저 검증하고 있다. 모든 Feature의 빈 계층을 미리 만들지 않고, 실제 유스케이스가 생길 때 필요한 계층만 추가한다.
+상세 구조, asmdef 의존 관계, Player 타입 UML과 런타임 시퀀스의 정본은 [`Docs/Architecture.md`](Docs/Architecture.md)에서 관리한다.
 
-```
-Assets/
-├─ Feature/                  # 기능 단위 모듈 — 이 프로젝트의 핵심
-│  ├─ Combat/
-│  │  ├─ Domain/             # 순수 C# — 규칙·엔티티. Unity API 의존 없음
-│  │  ├─ Application/        # 유스케이스 — 도메인 조합
-│  │  ├─ Infrastructure/     # Unity 구현체 — MonoBehaviour, SO 접근
-│  │  ├─ Presentation/       # View에 표시 상태·명령 전달. UI 프레임워크 의존 없음
-│  │  ├─ View/               # UI Toolkit 기반 렌더링·입력·바인딩
-│  │  └─ Installer/          # VContainer 등록
-│  ├─ Inventory/
-│  ├─ Item/
-│  ├─ Player/
-│  ├─ Enemy/
-│  └─ Map/
-├─ Shared/                   # 여러 Feature가 공유하는 계약·유틸
-├─ Core/                     # 앱 진입점, 루트 DI 스코프, 씬 로딩
-├─ Data/                     # ScriptableObject 데이터 에셋
-├─ Art/                      # 무료 리소스 (스프라이트, 아틀라스)
-├─ Settings/                 # URP 렌더 파이프라인 설정
-└─ Scenes/
-```
-
-**의존 규칙 (목표)**
-
-```
-View ──▶ Presentation ──▶ Application ──▶ Domain
-Infrastructure ──▶ Application ──▶ Domain
-```
-
-- `Domain`은 아무것도 의존하지 않는다. Unity 참조도 없다.
-- `Presentation`은 View에 무엇을 표시할지 상태와 명령으로 전달하며, UI Toolkit 같은 UI 프레임워크를 참조하지 않는다.
-- `View`는 UI Toolkit, UXML·USS, 사용자 입력과 바인딩을 소유하고 `Presentation`이 제공한 상태를 실제 화면에 그린다.
-- Feature 간 직접 참조를 금지하고, 필요하면 `Shared`의 인터페이스를 경유한다.
-- Assembly Definition으로 위 규칙을 컴파일 단계에서 강제한다.
-
-의존 방향은 규약이 아니라 **컴파일러가 강제하는 사실**로 만든다. 수단은 asmdef의 두 필드다.
-
-- `"references"` — 참조 화이트리스트. 목록에 없는 어셈블리의 타입을 쓰면 컴파일 에러
-- `"noEngineReferences": true` — 해당 어셈블리에서 `UnityEngine`을 아예 못 쓰게 한다. `Domain`·`Application`에 걸면 "도메인이 엔진에 의존하지 않는다"가 컴파일 단계에서 보장된다
-
----
-
-Domain은 참조가 하나도 없다. `Infrastructure`와 `Presentation`은 서로를 보지 못하며, `View`만 `Presentation`을 참조한다. **Domain·Application은 VContainer도 모른다** — 특성 없는 순수 생성자로 두고 `Installer`가 조립한다.
-
-**현재 구현 상태**
+현재 구현 상태:
 
 - `Player` 이동·점프 세로 슬라이스가 Domain부터 View까지 구현돼 있다.
 - `Player.Domain`, `Player.Application`, `Player.Presentation`은 `noEngineReferences: true`로 Unity API 의존을 차단한다.
