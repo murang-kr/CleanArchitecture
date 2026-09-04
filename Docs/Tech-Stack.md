@@ -159,3 +159,37 @@ uloop run-tests
 ```bash
 uloop get-logs --max-count 30
 ```
+
+---
+
+# 저장 변경 증거 — Unity CLI `unity vcs`
+
+Unity CLI `1.0.0-beta.8`의 `unity vcs`는 Scene·Prefab의 Git 전후 상태를 raw YAML 줄이 아니라 GameObject·Component·직렬화 필드 단위 JSON으로 조회한다. uloop가 현재 Editor 상태와 컴파일·테스트를 관측하는 도구라면, `unity vcs`는 저장된 Scene·Prefab 변경을 관측하는 **E1 증거 수집기**다. 두 도구는 대체 관계가 아니다.
+
+현재 설치 기준:
+
+```bash
+unity --version
+# 1.0.0-beta.8
+```
+
+프로젝트 하네스에서는 `.agents/skills/unity-vcs-evidence/`의 공용 래퍼를 통해 읽기 전용 명령만 실행한다.
+
+```bash
+node .agents/skills/unity-vcs-evidence/scripts/unity-vcs-evidence.js diff Assets/Scenes/ArchitectureSandbox.unity
+node .agents/skills/unity-vcs-evidence/scripts/unity-vcs-evidence.js conflicts
+node .agents/skills/unity-vcs-evidence/scripts/unity-vcs-evidence.js explain Assets/Scenes/ArchitectureSandbox.unity
+```
+
+래퍼는 beta.8 이상, JSON·비대화형 출력, Scene·Prefab 경로를 강제하며 `resolve` 같은 쓰기 명령을 거부한다. Unity의 원본 응답은 `unity`에 보존하고 공통 필드만 `normalizedChanges`로 제공한다. 기계 판정은 Unity 원본 `changedFields`의 raw 직렬화 필드명(예: `m_LocalPosition`)을 사용하며 공용 출력에서는 `fields`로 정규화한다. `fieldLabels`와 `summary`는 제공될 때 표시용으로만 쓴다.
+
+## 조사·계획·구현·검증 연결
+
+1. 조사: `HEAD → working tree` 또는 명시한 ref 사이의 E1 JSON을 수집한다.
+2. 계획: 예상 `asset / owner / component / raw field / change kind`를 기록한다.
+3. 구현: 기존 Editor 조작 경로를 사용하며 Unity VCS는 읽기 전용으로 유지한다.
+4. 검증: 같은 기준으로 E1을 재수집해 예상 변화와 대조한 뒤, 완료 검증 티어 V0–V2에 필요한 uloop 컴파일·테스트·Console 증거를 별도로 얻는다.
+
+E1–E4 관측 계층은 증거가 본 상태와 주장 상한을 뜻하고, V0–V2는 작업 위험에 따른 완료 검증량을 뜻한다. 따라서 둘 중 하나를 고르는 것이 아니라 같은 작업에서 함께 기록한다. `unity vcs`만으로 현재 Editor 메모리나 런타임 효과를 주장하지 않는다.
+
+Unity Pipeline 패키지는 이 도입 범위에 포함하지 않는다. `unity vcs`는 독립된 Unity CLI 계층으로 사용하며, Pipeline의 Editor 명령 실행 기능 없이도 저장 변경 증거 수집 목적을 충족한다.

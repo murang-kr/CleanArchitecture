@@ -185,5 +185,5 @@ actions : BulletActionData = Array[99]  <== first 20 shown, 79 OMITTED
 
 ## 범위 밖
 
-- **프리팹·씬** — `.prefab`/`.unity`는 대상이 아니다. `uloop find-game-objects`(컴포넌트 프로퍼티), `uloop get-hierarchy`(계층) 사용
+- **프리팹·씬** — `.prefab`/`.unity`는 대상이 아니다. Git 저장 상태의 전후 변화는 `unity-vcs-evidence`, 현재 Editor 메모리의 컴포넌트 프로퍼티·계층은 `uloop find-game-objects`·`uloop get-hierarchy`를 사용한다.
 - **수정** — 이 스킬은 읽기 전용이다. SO 값 변경은 프로젝트 스킬 `uloop-execute-dynamic-code`의 `references/scriptableobject.md` 참조
