@@ -19,6 +19,10 @@
 Assets/
 ├─ Core/
 │  └─ Installer/          # 애플리케이션 composition root
+├─ Content/
+│  ├─ ThirdParty/         # 제작자·배포 팩별 외부 런타임 원재료
+│  ├─ Generated/          # 생성형 런타임 원재료
+│  └─ Game/               # Prefab·Animator·Material 등 게임 조립 에셋
 ├─ Feature/
 │  └─ Player/
 │     ├─ Domain/          # 순수 이동 규칙과 값 객체
@@ -34,9 +38,39 @@ Assets/
 └─ Tests/
    ├─ EditMode/Player/
    └─ PlayMode/Player/
+
+SourceAssets/
+├─ ThirdParty/            # Unity가 import하지 않는 다운로드 원본
+└─ Generated/             # 생성 원본·프롬프트·편집 파일
 ```
 
 `Shared`를 포함한 다른 Feature 디렉터리는 아직 실제 공통 계약이나 유스케이스가 없으므로 생성하지 않았다.
+
+## 에셋 콘텐츠 파이프라인
+
+에셋 출처와 라이선스의 정본은 [`Asset-Provenance.md`](Asset-Provenance.md)다.
+
+```text
+외부 다운로드 또는 AI 생성
+            │
+            ▼
+      SourceAssets
+  Unity 비import 원본 보존
+            │
+        선별·Export
+            │
+            ▼
+ Assets/Content/ThirdParty|Generated
+       런타임 원재료
+            │
+   Prefab·Animator·Material 조립
+            │
+            ▼
+     Assets/Content/Game
+        게임 소유 에셋
+```
+
+서드파티 원재료는 제작자와 배포 팩의 경계를 유지하고 직접 수정하지 않는다. 생성형 원재료는 서드파티와 분리해 생성 도구·프롬프트·참조 원본을 추적한다. 최종 Player·Enemy·UI 구성물은 원재료 출처와 무관하게 `Assets/Content/Game/`에서 소유하며, 리소스를 교체할 때 원재료를 이동하지 않고 Unity 참조만 바꾼다.
 
 ## 어셈블리 의존 관계
 
