@@ -2,11 +2,11 @@
 id: DEV-2026-005
 title: 커밋 메시지 규칙 하네스
 status: completed
-verification_tier: 2
+verification_tier: V1
 plan_review: okay
 date: 2026-09-03
 approved_at: 2026-09-03
-completed_at: 2026-09-03
+completed_at: 2026-09-04
 unity_version: 6000.3.20f1
 platform: macOS
 related_issue:
@@ -203,3 +203,65 @@ git diff --check
 - 메시지 형식은 Codex 명령 문자열보다 Git이 준비한 최종 메시지 파일을 검사하는 편이 입력 방식에 덜 의존한다.
 - 버전 관리되는 Git 훅은 `core.hooksPath` 설정이 없으면 실행되지 않으므로 세션 진단에서 활성화 상태를 함께 확인해야 한다.
 - 명령형 판정 목록을 변경할 때 `Docs/Commit-Message-Policy.md`와 `.codex/hooks/commit-message-lint.js`를 함께 갱신한다.
+
+# 2026-09-04 한국어 개조식 규칙 개정
+
+## 승인된 요구사항
+
+- 제목과 본문의 모든 내용 줄은 한국어를 포함한다.
+- 기존 영어 동사원형 시작 규칙과 허용 동사 목록을 제거한다.
+- 제목과 본문은 `~한다` 같은 종결 어미나 마침표를 붙이지 않는 개조식 문구로 작성한다.
+- 본문은 필수이며 한 줄에 한 항목만 작성한다.
+- 같은 문단의 항목은 빈 줄 없이 줄바꿈하고, 다른 문단은 정확히 빈 줄 하나로 구분한다.
+- 제목과 본문 사이도 정확히 빈 줄 하나를 둔다.
+
+## 개정 계획
+
+1. 자동 테스트를 새 계약으로 먼저 바꾸고 기존 검사기에서 RED를 확인한다.
+2. 정책 정본의 예시와 자동 검사 범위를 한국어 개조식 규칙으로 교체한다.
+3. 검사기에 한글 포함, 본문 필수, 개조식 끝맺음, 문단 간격 판정을 추가한다.
+4. 단위 테스트, 실제 `commit-msg` 진입점, 전체 훅 테스트, 하네스 닥터를 재검증한다.
+
+## 구조·소유권 점검
+
+- 정책 소유자는 `Docs/Commit-Message-Policy.md`, 판정 소유자는 `.codex/hooks/commit-message-lint.js`, 회귀 소유자는 기존 테스트 파일로 유지한다.
+- 새 실행 경로나 의존성을 만들지 않고 기존 Git 네이티브 훅을 확장한다.
+- 자연어 의미상 문단 구분은 기계 판정하지 않는다. 작성자가 선택한 경계가 0줄 또는 정확히 1줄인지 형식만 판정한다.
+
+## 검증 계획
+
+- 완료 검증 티어 **V1**, 관측 계층 **E1**.
+- RED→GREEN: 새 한국어 개조식 테스트를 먼저 실패시킨 뒤 검사기 변경 후 통과시킨다.
+- `node --test .codex/hooks/tests/commit-message-lint.test.js`
+- `node --test .codex/hooks/tests/*.test.js`
+- `node .codex/hooks/harness-doctor.js`
+- 실제 `.githooks/commit-msg` 정상·오류 메시지 판정
+- `git diff --check`
+
+## 개정 실행 기록
+
+| 시각 | 작업 | 결과 | 증거 |
+|---|---|---|---|
+| 22:08 | 새 한국어 개조식 테스트 적용 | RED | 16개 중 12개 실패, 기존 영어 동사 검사와 신규 규칙 부재 확인 |
+| 22:12 | 한국어·본문·개조식·문단 검사 구현 | GREEN | 커밋 메시지 테스트 16/16 통과 |
+| 22:14 | 영문 명령 동사 혼합 경계 추가 | RED→GREEN | 신규 경계 1개 실패 후 구현, 최종 18/18 통과 |
+| 22:15 | 전체 하네스 회귀 검증 | PASS | 전체 Node 테스트 32/32, 하네스 닥터 exit 0, `core.hooksPath=.githooks` |
+
+## 개정 결정
+
+기존 DEC-002의 영어 동사 허용 목록을 폐기한다. 제목과 본문 각 내용 줄은 한글을 포함해야 하며, `Add`·`Fix` 같은 기존 영문 명령 동사로 시작하면 한글이 뒤에 있어도 거부한다. `Unity` 같은 영문 고유명사·식별자는 한국어 문구 안에서 허용한다.
+
+종결 어미의 완전한 형태소 분석은 하지 않는다. 개조식 계약에서 흔히 잘못 쓰는 `다`, `요`, `죠`, `네요`, `까요`, `세요`, `십시오`, `하자` 끝맺음과 줄 끝 종결 부호를 결정적으로 거부한다. `추가함` 같은 명사형 표현은 허용한다.
+
+## 개정 검증
+
+- `node --test .codex/hooks/tests/commit-message-lint.test.js`: 18 passed, 0 failed
+- `node --test .codex/hooks/tests/*.test.js`: 32 passed, 0 failed
+- 실제 `.githooks/commit-msg` 진입점: 한국어 개조식 메시지 exit 0, 영어·본문 누락 메시지 exit 1
+- `node .codex/hooks/harness-doctor.js`: 출력 없음, exit 0
+- `git config --local --get core.hooksPath`: `.githooks`
+- `git diff --check`: 오류 없음
+
+## 개정 최종 결과
+
+제목과 필수 본문을 한국어 개조식으로 작성하고, 같은 문단은 줄바꿈만 사용하며 다른 문단은 빈 행 하나로 구분하는 규칙을 정본과 Git hook에 적용했다. 새 커밋부터 영어 전용 메시지, 영문 명령 동사 접두사, 종결 어미·종결 부호, 본문 누락, 잘못된 빈 행 수를 자동 차단한다.

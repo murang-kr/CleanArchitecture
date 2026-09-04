@@ -2,47 +2,11 @@
 const fs = require('fs');
 
 const MAX_SUBJECT_LENGTH = 50;
-const SUBJECT_PERIOD = /[.。．]$/u;
 const COMMENT_LINE = /^\s*#/u;
-const ALLOWED_VERBS = new Set([
-  'Add',
-  'Fix',
-  'Update',
-  'Remove',
-  'Refactor',
-  'Move',
-  'Rename',
-  'Document',
-  'Test',
-  'Configure',
-  'Enable',
-  'Disable',
-  'Improve',
-  'Simplify',
-  'Prevent',
-  'Enforce',
-  'Unify',
-  'Connect',
-  'Replace',
-  'Create',
-  'Implement',
-  'Support',
-  'Handle',
-  'Use',
-  'Align',
-  'Clean',
-  'Extract',
-  'Introduce',
-  'Separate',
-  'Restore',
-  'Validate',
-  'Guard',
-  'Change',
-  'Set',
-  'Bump',
-  'Merge',
-  'Revert'
-]);
+const HANGUL = /[\u1100-\u11FF\u3130-\u318F\uAC00-\uD7A3]/u;
+const TERMINAL_PUNCTUATION = /[.!?。．！？]$/u;
+const SENTENCE_ENDING = /(?:다|요|죠|네요|까요|세요|십시오|하자)$/u;
+const ENGLISH_ACTION_PREFIX = /^(?:Add|Fix|Update|Remove|Refactor|Move|Rename|Document|Test|Configure|Enable|Disable|Improve|Simplify|Prevent|Enforce|Unify|Connect|Replace|Create|Implement|Support|Handle|Use|Align|Clean|Extract|Introduce|Separate|Restore|Validate|Guard|Change|Set|Bump|Merge|Revert)\b/u;
 
 function normalizeLines(message) {
   const normalized = String(message)
@@ -74,18 +38,60 @@ function validateCommitMessage(message) {
     errors.push(`제목은 ${MAX_SUBJECT_LENGTH}자 이하여야 한다. 현재 ${subjectLength}자다.`);
   }
 
-  const firstWord = subject.match(/^([A-Za-z]+)\b/u)?.[1] || '';
-  if (!ALLOWED_VERBS.has(firstWord)) {
-    errors.push(`제목은 허용된 영어 동사원형으로 시작해야 한다. 현재 시작: ${firstWord || '(없음)'}`);
+  if (!HANGUL.test(subject)) {
+    errors.push('제목은 한글을 포함한 한국어 개조식 문구로 작성한다.');
+  }
+  if (ENGLISH_ACTION_PREFIX.test(subject)) {
+    errors.push('제목은 영문 명령 동사로 시작하지 않고 한국어 개조식으로 작성한다.');
   }
 
-  if (SUBJECT_PERIOD.test(subject)) {
-    errors.push('제목 끝에는 마침표를 사용하지 않는다.');
+  if (TERMINAL_PUNCTUATION.test(subject)) {
+    errors.push('제목 끝에는 마침표·느낌표·물음표 같은 종결 부호를 사용하지 않는다.');
+  } else if (SENTENCE_ENDING.test(subject)) {
+    errors.push('제목은 종결 어미 없이 명사형 개조식 문구로 작성한다.');
   }
 
-  const hasBody = lines.slice(1).some(line => line.trim() !== '');
-  if (hasBody && lines[1].trim() !== '') {
+  const bodyLines = lines.slice(1);
+  const hasBody = bodyLines.some(line => line.trim() !== '');
+  if (!hasBody) {
+    errors.push('본문은 필수다. 제목 다음 빈 행 뒤에 변경 내용과 이유를 작성한다.');
+    return errors;
+  }
+
+  if (lines[1].trim() !== '') {
     errors.push('제목과 본문 사이에 빈 행을 둔다.');
+    return errors;
+  }
+
+  if (lines[2]?.trim() === '') {
+    errors.push('제목과 본문 사이는 정확히 빈 행 하나로 구분한다.');
+  }
+
+  let previousWasBlank = false;
+  let contentLineNumber = 0;
+  for (const line of lines.slice(2)) {
+    const content = line.trim();
+    if (content === '') {
+      if (previousWasBlank) {
+        errors.push('본문 문단 사이는 빈 행 하나로만 구분한다.');
+      }
+      previousWasBlank = true;
+      continue;
+    }
+
+    previousWasBlank = false;
+    contentLineNumber += 1;
+    if (!HANGUL.test(content)) {
+      errors.push(`본문 ${contentLineNumber}번째 줄은 한글을 포함한 한국어 개조식 문구로 작성한다.`);
+    }
+    if (ENGLISH_ACTION_PREFIX.test(content)) {
+      errors.push(`본문 ${contentLineNumber}번째 줄은 영문 명령 동사로 시작하지 않고 한국어 개조식으로 작성한다.`);
+    }
+    if (TERMINAL_PUNCTUATION.test(content)) {
+      errors.push(`본문 ${contentLineNumber}번째 줄 끝에는 종결 부호를 사용하지 않는다.`);
+    } else if (SENTENCE_ENDING.test(content)) {
+      errors.push(`본문 ${contentLineNumber}번째 줄은 종결 어미 없이 명사형 개조식 문구로 작성한다.`);
+    }
   }
 
   return errors;
@@ -123,7 +129,6 @@ if (require.main === module) {
 }
 
 module.exports = {
-  ALLOWED_VERBS,
   MAX_SUBJECT_LENGTH,
   normalizeLines,
   run,
