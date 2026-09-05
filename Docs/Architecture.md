@@ -2,7 +2,7 @@
 
 > 이 문서는 프로젝트 아키텍처의 상세 정본이다.
 >
-> 최종 코드 검증일: 2026-09-04<br>
+> 최종 코드 검증일: 2026-09-05<br>
 > Unity 버전: 6000.3.20f1<br>
 > 현재 구현 범위: Player 수평 이동과 접지 점프 세로 슬라이스
 
@@ -260,6 +260,10 @@ flowchart TD
 ```
 
 `GameLifetimeScope`는 씬에서 설정과 Unity 어댑터 참조를 받고 누락 여부를 검증한다. `PlayerInstaller`는 포트 구현체와 순수 객체를 VContainer에 등록한 뒤, 빌드 콜백에서 `PlayerInputView`와 `PlayerVisualView`에 `PlayerPresenter`를 주입한다.
+
+### 픽셀 아트 임포트와 회귀 방지
+
+[`PixelArtTexturePostprocessor`](../Assets/Editor/PixelArtTexturePostprocessor.cs)는 `Assets/Content/`의 텍스처를 Sprite·PPU 32·Point·무압축·mipmap 해제·NPOT 원본 유지로 임포트한다. 기존 분할·피벗·Sprite Mode는 보존한다. Unity의 기본 Editor 어셈블리에만 속하며 런타임 Feature 계층이나 asmdef 그래프에는 참여하지 않는다. 출처 팩과 생성형 에셋에 같은 기준을 적용하며 상세 관리 규칙은 [에셋 출처 문서](Asset-Provenance.md)에 둔다.
 
 ## 의존 규칙
 

@@ -46,7 +46,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -60,7 +60,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -84,7 +84,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -109,89 +109,199 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Front Palm Bottom and Grass (32x32)_0
-      rect:
-        serializedVersion: 2
-        x: 10
-        y: 35
-        width: 12
-        height: 61
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData:
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a5419b0dfb1718520800000000000000
-      internalID: 2702566320053490778
-      vertices: []
-      indices:
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Front Palm Bottom and Grass (32x32)_1
-      rect:
-        serializedVersion: 2
-        x: 43
-        y: 74
-        width: 50
-        height: 22
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData:
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 26f989582ab3dc960800000000000000
-      internalID: 7623815313420230498
-      vertices: []
-      indices:
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Front Palm Bottom and Grass (32x32)_2
+      name: FrontPalmPart_0_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 10
-        width: 33
-        height: 12
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData:
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 0248e9e83f2159930800000000000000
-      internalID: 4149243468970886176
+      spriteID: 1b9cdf1e9288a4d7f968b7ca5274932b
+      internalID: 671104442
       vertices: []
       indices:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Front Palm Bottom and Grass (32x32)_3
+      name: FrontPalmPart_1_0
       rect:
         serializedVersion: 2
-        x: 33
+        x: 32
         y: 0
-        width: 63
-        height: 65
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData:
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: e4334cb3b5bff89f0800000000000000
-      internalID: -463875867332562098
+      spriteID: 0d14c4bbd706c47ae91c8d63a0506f01
+      internalID: -1333141599
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FrontPalmPart_2_0
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09c6918d31d844d3c9ef0731be52d0bd
+      internalID: -302868396
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FrontPalmPart_0_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e07e8e3cfaa77484d840bcf705044fef
+      internalID: -707064840
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FrontPalmPart_1_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77728e6a3ee4444afb4f31eb00519473
+      internalID: -125788149
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FrontPalmPart_2_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ccdeded093e84cdfb969c22f5f52170
+      internalID: 165747004
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FrontPalmPart_0_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66fcf16b0a527485487151202d689c31
+      internalID: 2124868056
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FrontPalmPart_1_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82a2de58bfcc44403a23848cbb40e6c6
+      internalID: -1461582497
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FrontPalmPart_2_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54fc75b20ae07415c835b03c9097e8d2
+      internalID: -1541977052
       vertices: []
       indices:
       edges: []
@@ -200,7 +310,7 @@ TextureImporter:
     customData:
     physicsShape: []
     bones: []
-    spriteID:
+    spriteID: b0e1bf66d57b84b7fabcb0cafda0b18f
     internalID: 0
     vertices: []
     indices:
@@ -214,6 +324,15 @@ TextureImporter:
       Front Palm Bottom and Grass (32x32)_1: 7623815313420230498
       Front Palm Bottom and Grass (32x32)_2: 4149243468970886176
       Front Palm Bottom and Grass (32x32)_3: -463875867332562098
+      FrontPalmPart_0_0: 671104442
+      FrontPalmPart_0_1: -707064840
+      FrontPalmPart_0_2: 2124868056
+      FrontPalmPart_1_0: -1333141599
+      FrontPalmPart_1_1: -125788149
+      FrontPalmPart_1_2: -1461582497
+      FrontPalmPart_2_0: -302868396
+      FrontPalmPart_2_1: 165747004
+      FrontPalmPart_2_2: -1541977052
   mipmapLimitGroupName:
   pSDRemoveMatte: 0
   userData:

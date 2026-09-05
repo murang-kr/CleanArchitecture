@@ -11,6 +11,15 @@
 - 서드파티 파일은 원본을 직접 수정하지 않는다. 수정본이 필요하면 Game 산출물이나 별도 생성형 원재료로 만들고 파생 출처를 기록한다.
 - 새 팩을 가져오거나 사용 범위를 바꾸면 이 문서와 `Docs/licenses/assets/`의 근거를 함께 갱신한다.
 
+## 공통 픽셀 아트 규칙
+
+- `Assets/Content/`의 모든 픽셀 아트는 출처와 사용처에 관계없이 **PPU 32**를 사용한다. 32×32px 타일은 1×1 Unity 유닛이다.
+- Sprite 및 모든 부모의 `localScale`·최종 `lossyScale`은 `(1,1,1)`로 고정한다. 코드·AnimationClip에서 배율을 변경하거나 개별 PPU로 크기를 보정하지 않는다. 좌우 반전은 `SpriteRenderer.flipX`로 처리한다.
+- [`PixelArtTexturePostprocessor.cs`](../Assets/Editor/PixelArtTexturePostprocessor.cs)가 임포트 시 Sprite·PPU 32·Point·무압축·mipmap 해제·NPOT 원본 유지를 적용한다. 기존 Sprite Mode·분할·피벗은 변경하지 않는다. 패키지와 Unity 기본 리소스는 이 경로 밖이므로 적용 대상이 아니다.
+- ThirdParty PNG 바이트는 그대로 보관하고 Unity `.meta`에 프로젝트 임포트 설정을 기록한다. 현재 Treasure Hunters 1,204개와 Ninja Adventure 564개에 같은 정책을 적용한다.
+- 카메라 기준은 384×216·16:9·PPU 32다. 화면 전체의 정수 확대만 허용하며 FHD는 5배, 768×432는 2배다. 배경 크기는 원본 레이어 배치·타일 반복으로 맞춘다.
+- 같은 PPU라도 원본 자체의 픽셀 표현 단위가 다르면 아트 정합성 검토가 필요하다. 향후 UI는 PPU 외에도 레이아웃·출력 배율을 따로 확인하며 개별 이미지 Stretch를 크기 보정 수단으로 사용하지 않는다.
+
 ## 출처 목록
 
 | ID | 상태 | 출처 유형 | 에셋 | 제작자 | 라이선스 | 런타임 경로 |
@@ -34,7 +43,7 @@
 - 가져온 범위: 해제본의 PNG 1,204개
 - 제외한 범위: Aseprite 21개, `.DS_Store`, ZIP 메타데이터
 - 현재 용도: 횡스크롤 Player, Enemy, 함정, 아이템, 환경 타일과 UI 후보
-- 수정 사항: 없음
+- 수정 사항: PNG 원본 변경 없음. 전체 Unity 임포트 PPU 32 및 공통 픽셀 아트 설정, 데모 Terrain·야자수 부품 Sprite 분할 적용
 - 크레딧 의무: 없음
 - 자발적 크레딧: Pixel Frog와 원본 URL 표기 예정
 
@@ -52,7 +61,7 @@
 - 가져온 범위: `FX` PNG 72개, `Items` PNG 138개, `Ui` PNG 354개
 - 제외한 범위: Actor, Audio, Backgrounds, Font, GIF, 미리보기 이미지, 루트 Palette, 문서
 - 현재 용도: 공격·피격·상태이상 VFX, 인벤토리 아이콘과 UI 후보
-- 수정 사항: 없음
+- 수정 사항: PNG 원본 변경 없음. 전체 Unity 임포트 PPU 32 및 공통 픽셀 아트 설정 적용
 - 크레딧 의무: 없음
 - 자발적 크레딧: Pixel-Boy, AAA와 원본 URL 표기 예정
 
