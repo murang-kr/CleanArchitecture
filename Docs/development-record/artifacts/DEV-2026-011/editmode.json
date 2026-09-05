@@ -1,0 +1,16 @@
+{
+  "Command": "uloop run-tests --test-mode EditMode --filter-type assembly --filter-value CleanArchitecture.Player.EditModeTests --unsaved-changes fail",
+  "CompileNote": "A compile ran before the tests and succeeded. Pass --skip-compile to run the tests without this compile step.",
+  "CompletedAt": "2026-09-05T06:14:53.9434760Z",
+  "FailedCount": 0,
+  "HasFailures": false,
+  "Message": "Test execution completed with status: Passed",
+  "NoTestsFound": false,
+  "NoTestsFoundExplanation": "",
+  "PassedCount": 24,
+  "SkippedCount": 0,
+  "Status": "Passed",
+  "Success": true,
+  "TestCount": 24,
+  "XmlPath": null
+}

@@ -6,13 +6,19 @@
     "CleanArchitecture.Player.Domain",
     "CleanArchitecture.Player.Infrastructure",
     "CleanArchitecture.Player.Presentation",
-    "VContainer"
+    "VContainer",
+    "CleanArchitecture.Player.View",
+    "CleanArchitecture.Player.Application",
+    "Unity.InputSystem"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "R3.dll",
+    "nunit.framework.dll"
+  ],
   "autoReferenced": false,
   "defineConstraints": [
     "UNITY_INCLUDE_TESTS"

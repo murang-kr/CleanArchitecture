@@ -10,7 +10,7 @@ namespace CleanArchitecture.Player.View
         [SerializeField] private string moveActionPath = "Player/Move";
         [SerializeField] private string jumpActionPath = "Player/Jump";
 
-        private PlayerPresenter _presenter;
+        private IPlayerInputCommands _commands;
         private InputAction _moveAction;
         private InputAction _jumpAction;
         private float _horizontalInput;
@@ -22,9 +22,9 @@ namespace CleanArchitecture.Player.View
             ResolveActions();
         }
 
-        public void Initialize(PlayerPresenter presenter)
+        public void Initialize(IPlayerInputCommands commands)
         {
-            _presenter = presenter;
+            _commands = commands;
         }
 
         private void Awake()
@@ -60,12 +60,12 @@ namespace CleanArchitecture.Player.View
 
         private void FixedUpdate()
         {
-            if (_presenter == null)
+            if (_commands == null)
             {
                 return;
             }
 
-            _presenter.UpdateMotion(_horizontalInput, _jumpQueued, Time.fixedDeltaTime);
+            _commands.UpdateMotion(_horizontalInput, _jumpQueued, Time.fixedDeltaTime);
             _jumpQueued = false;
         }
 

@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-09-05T15:43:31.941772+09:00",
+  "head": "fef3bdc664189b5c32dd5a92bdc6193bbd0a8993",
+  "architecture": "[architecture] 7 assemblies, 16 edges, 4 Mermaid blocks matched",
+  "whitespaceCheckPassed": true,
+  "unchangedPaths": [
+    "Assets/Scenes",
+    "Assets/Content/ThirdParty",
+    "Assets/Content/Generated",
+    "Assets/Content/Game/Player/Animations",
+    "Assets/Content/Game/Environment",
+    "Assets/Feature/Player/Domain",
+    "Assets/Feature/Player/Application",
+    "Assets/Feature/Player/Infrastructure",
+    "ProjectSettings"
+  ],
+  "finalConsoleErrorCount": 0,
+  "editModeTests": {
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0
+  },
+  "playModeTests": {
+    "passed": 18,
+    "failed": 0,
+    "skipped": 0
+  },
+  "sourceSha256": {
+    "Assets/Content/Game/Player/Animator/CaptainLocomotion.controller": "075d44a6bb78036861f40746f6d116607e00a27004e8281e44e59537ece71f3d",
+    "Assets/Feature/Player/Application/IPlayerMotor.cs": "3d7283078dbc7a9b4c9227187bb8bf7014bc34d50045f6756382e8fdded89ff0",
+    "Assets/Feature/Player/Application/UpdatePlayerMotionUseCase.cs": "b3b2a84d6bb528f065a2f9f5e4d91c17d9827003375dc1f9efb40c0fa93a938b",
+    "Assets/Feature/Player/Domain/PlayerMotionRules.cs": "3af4f1fda07af7535bfa86fae0d32e4291a93e0a54d6cad659a34d1d75e5efd4",
+    "Assets/Feature/Player/Domain/PlayerMotionState.cs": "9956c6fb8d218d9ff10d741a8c9e2c60a4fe9579379e61389dfce5e034295f33",
+    "Assets/Feature/Player/Infrastructure/PlayerMovementSettings.cs": "fce8e4da59513daa66970e9414506ecb7bf1d99e200effce27e34bef8d737f3e",
+    "Assets/Feature/Player/Infrastructure/Rigidbody2DPlayerMotor.cs": "3c803ce3c6bf5e9bc8414c6f1e96310420a93a45c6af1068f3a4ea8cd625554f",
+    "Assets/Feature/Player/Installer/PlayerInstaller.cs": "fe824a5bc8f1a981c202e24bad366143c02858d8673a4dd3bd9923d12cf17dad",
+    "Assets/Feature/Player/Presentation/IPlayerInputCommands.cs": "e2cee57739bb9f7775eeb69c5d02787287e73acfaf84728de7998ab98fe36425",
+    "Assets/Feature/Player/Presentation/PlayerPresenter.cs": "74abeac58846b3caf86c613dae765ed7380fb2685a0b79cd69ed767936191b39",
+    "Assets/Feature/Player/Presentation/PlayerViewState.cs": "10e102f21e9827fb805450ace763469a1f5414b49142c424f568516c1edacfed",
+    "Assets/Feature/Player/View/PlayerInputView.cs": "046814645c2cfe85a952c26b4afd5adc7f32c9893ee704e9c4515ecac1152161",
+    "Assets/Feature/Player/View/PlayerVisualView.cs": "08f9c10f61656a823496433727ad88125bc73e6748b41ee9ce96c5648eb98e8a",
+    "Assets/Tests/EditMode/Player/CleanArchitecture.Player.EditModeTests.asmdef": "9047e3f516cc507c10d552093d609925c48e5de54335b41ab4ca9637f9f323b7",
+    "Assets/Tests/EditMode/Player/PlayerMotionRulesTests.cs": "6dd8d7d9654b8573f985e8cce6c3a3585d010a78aaccd3edfc6c3a475fe4dd5a",
+    "Assets/Tests/EditMode/Player/PlayerPresenterTests.cs": "089e000094df98c927c65ac2a84c4dde889c2440e5cf0801ac51e1e9dc765253",
+    "Assets/Tests/EditMode/Player/UpdatePlayerMotionUseCaseTests.cs": "8bcecf4598f1072229b207b8eae080e182644feb0fe7813dcc3cd9100bb85685",
+    "Assets/Tests/PlayMode/Player/CleanArchitecture.Player.PlayModeTests.asmdef": "9a46a5895c84c046706769bf5d9f6a307928efe2677e29f44b87991a8fca0b63",
+    "Assets/Tests/PlayMode/Player/PlayerInputViewTests.cs": "3ee2c70762391ee44e7ac48105e6703400d12b1f0b202fdbb3d5de2c4abe51e2",
+    "Assets/Tests/PlayMode/Player/PlayerMovementSmokeTests.cs": "2ef5c1305595b2a4ae7183357ae4833d364a49a9c49656d3e34d1f692d59707d",
+    "Assets/Tests/PlayMode/Player/PlayerVisualViewTests.cs": "9717e7ec905d459996ec984fbe775bc1dd12d74b2b9b2cb76f6d691d219ade4a"
+  }
+}

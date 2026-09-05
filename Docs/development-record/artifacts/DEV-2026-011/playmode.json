@@ -1,0 +1,15 @@
+{
+  "CompileNote": "A compile ran before the tests and succeeded. Pass --skip-compile to run the tests without this compile step.",
+  "CompletedAt": "2026-09-05T06:34:33.8226000Z",
+  "FailedCount": 0,
+  "HasFailures": false,
+  "Message": "Test execution completed with status: Passed",
+  "NoTestsFound": false,
+  "NoTestsFoundExplanation": "",
+  "PassedCount": 18,
+  "SkippedCount": 0,
+  "Status": "Passed",
+  "Success": true,
+  "TestCount": 18,
+  "XmlPath": null
+}

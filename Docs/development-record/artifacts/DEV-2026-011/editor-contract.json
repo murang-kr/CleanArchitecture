@@ -1,0 +1,16 @@
+{
+  "Result": "grid=(1.00, 1.00, 1.00)\nscene=Assets/Scenes/ArchitectureSandbox.unity; scaleViolations=0; sprites=16; spritePPUViolations=0; tileCells=21; tileViolations=0\nparameter=Locomotion:Int\nparameter=Land:Trigger\nclip=Captain_Idle; fps=10; length=0.6\nclip=Captain_Run; fps=10; length=0.7\nclip=Captain_Jump; fps=10; length=0.4\nclip=Captain_Fall; fps=10; length=0.2\nclip=Captain_Land; fps=10; length=0.3\nIdle->Run; Locomotion Equals 1; exit=False/0.9; seconds=0.05\nIdle->Jump; Locomotion Equals 2; exit=False/0.9; seconds=0.05\nIdle->Fall; Locomotion Equals 3; exit=False/0.9; seconds=0.05\nRun->Idle; Locomotion Equals 0; exit=False/0.9; seconds=0.05\nRun->Jump; Locomotion Equals 2; exit=False/0.9; seconds=0.05\nRun->Fall; Locomotion Equals 3; exit=False/0.9; seconds=0.05\nJump->Idle; Locomotion Equals 0; exit=False/0.9; seconds=0.05\nJump->Run; Locomotion Equals 1; exit=False/0.9; seconds=0.05\nJump->Fall; Locomotion Equals 3; exit=False/0.9; seconds=0.05\nFall->Idle; Locomotion Equals 0; exit=False/0.9; seconds=0.05\nFall->Run; Locomotion Equals 1; exit=False/0.9; seconds=0.05\nFall->Jump; Locomotion Equals 2; exit=False/0.9; seconds=0.05\nLand->Idle; Locomotion Equals 0; exit=True/0.9; seconds=0.05\nLand->Run; Locomotion Equals 1; exit=True/0.9; seconds=0.05\nLand->Jump; Locomotion Equals 2; exit=False/0.9; seconds=0.05\nLand->Fall; Locomotion Equals 3; exit=False/0.9; seconds=0.05\nassetsPPU=32\nrefResolutionX=384\nrefResolutionY=216\ncropFrame=Windowbox\ngridSnapping=UpscaleRenderTexture\nPresentationAssemblyReference=netstandard\nPresentationAssemblyReference=CleanArchitecture.Player.Application\nPresentationAssemblyReference=R3\ninputSettings=PointersAndKeyboardsRespectGameViewFocus/ResetAndDisableNonBackgroundDevices; timeScale=1; runInBackground=True",
+  "Logs": [
+    "Execution completed successfully"
+  ],
+  "CompilationErrors": [],
+  "ErrorMessage": "",
+  "Warning": "The Unity Editor is unfocused while Play Mode is running, so Play Mode progress may be throttled. Run `uloop focus-window`, or use the `pause-point --await`/`--trigger` flow instead of polling for progress.",
+  "Error": "",
+  "UpdatedCode": null,
+  "DiagnosticsSummary": null,
+  "Diagnostics": [],
+  "EditorPlaying": true,
+  "EditorPaused": true,
+  "Success": true
+}

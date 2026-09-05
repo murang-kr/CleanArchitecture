@@ -1,0 +1,17 @@
+{
+  "fhd": [
+    1920,
+    1080
+  ],
+  "small": [
+    768,
+    432
+  ],
+  "logical": [
+    384,
+    216
+  ],
+  "fhd5xBlockViolations": 0,
+  "small2xBlockViolations": 0,
+  "logicalDifferingPixels": 0
+}

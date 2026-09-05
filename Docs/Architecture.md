@@ -4,13 +4,13 @@
 >
 > 최종 코드 검증일: 2026-09-05<br>
 > Unity 버전: 6000.3.20f1<br>
-> 현재 구현 범위: Player 수평 이동·접지 점프와 Treasure Hunters 시각 데모
+> 현재 구현 범위: Player 수평 이동·접지 점프, R3 표현 상태 발행과 Treasure Hunters 시각 데모
 
 ## 문서 원칙
 
 - 실제 asmdef 참조와 실행되는 코드만 **현재 구조**로 기록한다.
 - 아직 구현하지 않은 Feature와 계층은 현재 다이어그램에 미리 추가하지 않는다.
-- 의존 방향은 안쪽 계층을 향하며, Unity와 외부 프레임워크는 바깥 계층에서만 사용한다.
+- 의존 방향은 안쪽 계층을 향한다. Domain·Application은 순수 이동 규칙과 유스케이스를 소유하며, Presentation은 상태 발행을 위해 R3 core를 사용한다. Unity API와 R3.Unity는 Presentation 안에 들이지 않고 DI 조립은 Installer가 소유한다.
 - 의존성 생성과 연결은 Installer와 composition root가 소유한다.
 
 ## 현재 디렉터리 구조
@@ -123,15 +123,17 @@ flowchart LR
 |---|---|---|---|
 | `Player.Domain` | 이동 상태·의도·설정·결정과 순수 판정 규칙 | 없음 | 예 |
 | `Player.Application` | 이동 유스케이스와 `IPlayerMotor`, `IPlayerMotionSettings` 포트 | `Player.Domain` | 예 |
-| `Player.Presentation` | 이동 결과·착지 순간을 표시 상태로 변환하고 View에 알림 | `Player.Application` | 예 |
+| `Player.Presentation` | 이동 결과를 의미 상태로 결정하고 R3 상태·착지 신호 발행 | `Player.Application` | 예 |
 | `Player.Infrastructure` | Rigidbody2D 모터와 설정 ScriptableObject | `Player.Application`, `Player.Domain` | 아니요 |
-| `Player.View` | Input System 입력 수집과 SpriteRenderer·Animator 표시 | `Player.Presentation`, `Unity.InputSystem` | 아니요 |
-| `Player.Installer` | Player 객체 등록과 View 초기화 | 모든 Player 계층, `VContainer` | 아니요 |
+| `Player.View` | 명령 포트로 Input System 입력 전달, 읽기 전용 흐름으로 SpriteRenderer·Animator 출력 | `Player.Presentation`, `Unity.InputSystem` | 아니요 |
+| `Player.Installer` | Player 등록, 입력 명령·출력 흐름 연결과 소스 수명 소유 | 모든 Player 계층, `VContainer` | 아니요 |
 | `Core.Installer` | 씬 참조 검증과 루트 DI 조립 | `Player.Infrastructure`, `Player.View`, `Player.Installer`, `VContainer` | 아니요 |
 
 `Player.Domain`, `Player.Application`, `Player.Presentation`은 asmdef의 `noEngineReferences: true`로 Unity API 직접 사용을 컴파일 단계에서 차단한다.
 
-테스트 어셈블리는 런타임 의존 그래프에 포함하지 않는다. 현재 `CleanArchitecture.Player.EditModeTests`는 `Player.Domain`, `Player.Application`, `Player.Presentation`을 직접 참조해 순수 이동 규칙·유스케이스와 Presenter의 착지 pulse를 검증한다. `CleanArchitecture.Player.PlayModeTests`는 실제 씬에서 조립된 Tilemap·Animator·Rigidbody2D 경로를 검증한다.
+R3 core는 `Assets/Packages/R3.1.3.1/lib/netstandard2.1/R3.dll`의 NuGet DLL이다. 런타임 asmdef는 `overrideReferences: false`와 DLL의 자동 참조 설정을 사용하므로 위 asmdef 그래프에 `R3` 노드나 간선을 추가하지 않는다. Presentation·View는 R3 core API를 사용하지만 `R3.Unity` asmdef를 참조하지 않는다. Domain·Application 코드에는 R3 사용이 없다. `noEngineReferences`는 Unity API를 차단하며 외부 DLL의 자동 참조 자체를 차단하는 설정은 아니다.
+
+테스트 어셈블리는 런타임 의존 그래프에 포함하지 않는다. `CleanArchitecture.Player.EditModeTests`는 `Player.Domain`, `Player.Application`, `Player.Presentation`을 직접 참조해 이동 규칙·유스케이스와 의미 상태·착지·R3 계약을 검증한다. `CleanArchitecture.Player.PlayModeTests`는 기존 `Core.Installer`, `Player.Domain`, `Player.Infrastructure`, `Player.Presentation`, `VContainer`에 더해 `Player.View`, `Player.Application`, `Unity.InputSystem`을 직접 참조한다. 실제 데모 조립·입력·Animator·View 수명·컨테이너 종료를 검증한다. 두 테스트 asmdef는 `overrideReferences: true`, `precompiledReferences: [R3.dll, nunit.framework.dll]`로 테스트에 필요한 DLL을 명시한다.
 
 ## Player 주요 타입 UML
 
@@ -158,17 +160,20 @@ classDiagram
         +Execute(input, deltaTime) PlayerMotionResult
     }
 
-    class PlayerPresenter {
-        +ViewState PlayerViewState
+    class IPlayerInputCommands {
+        <<interface>>
         +UpdateMotion(horizontalInput, jumpPressed, deltaTime)
-        +ViewStateChanged
+    }
+
+    class PlayerPresenter {
+        +ViewStates Observable~PlayerViewState~
+        +Landed Observable~Unit~
+        +UpdateMotion(horizontalInput, jumpPressed, deltaTime)
+        +Dispose()
     }
 
     class PlayerViewState {
-        +HorizontalSpeed float
-        +VerticalSpeed float
-        +IsGrounded bool
-        +JustLanded bool
+        +Locomotion PlayerLocomotion
         +FacingDirection int
     }
 
@@ -182,11 +187,11 @@ classDiagram
     }
 
     class PlayerInputView {
-        +Initialize(PlayerPresenter)
+        +Initialize(IPlayerInputCommands)
     }
 
     class PlayerVisualView {
-        +Initialize(PlayerPresenter)
+        +Initialize(viewStates, landed)
         -SpriteRenderer spriteRenderer
         -Animator animator
     }
@@ -207,8 +212,8 @@ classDiagram
     UpdatePlayerMotionUseCase --> IPlayerMotionSettings
     PlayerPresenter --> UpdatePlayerMotionUseCase
     PlayerPresenter --> PlayerViewState : create
-    PlayerInputView --> PlayerPresenter
-    PlayerVisualView --> PlayerPresenter
+    IPlayerInputCommands <|.. PlayerPresenter
+    PlayerInputView --> IPlayerInputCommands
     PlayerVisualView --> PlayerViewState : render
     PlayerInstaller ..> PlayerMotionRules : register
     PlayerInstaller ..> UpdatePlayerMotionUseCase : register
@@ -244,22 +249,36 @@ sequenceDiagram
     UseCase->>Motor: Apply(decision)
     Motor-->>UseCase: Rigidbody2D 속도 반영
     UseCase-->>Presenter: PlayerMotionResult
-    opt PlayerViewState가 변경됨
-        Presenter-->>Visual: ViewStateChanged
-        Visual->>Visual: 방향 반전과 Animator 파라미터 갱신
-        opt JustLanded
-            Visual->>Visual: Land trigger 1회 설정
-        end
+    Presenter->>Presenter: 의미 상태·방향·접지 전환 결정
+    opt 의미 상태 또는 방향이 변경됨
+        Presenter-->>Visual: ReactiveProperty → ViewStates 구독 알림
+        Visual->>Visual: flipX·Locomotion 파라미터 적용
+    end
+    opt 첫 샘플 이후 공중→접지
+        Presenter-->>Visual: Subject → Landed 구독 알림
+        Visual->>Visual: Land trigger 1회 설정
     end
 ```
 
-`PlayerInputView.Update`는 입력을 수집하고 점프를 큐에 보관한다. 물리 상태 변경은 `FixedUpdate`에서 시작되며, Domain의 `PlayerMotionRules`가 속도와 점프 가능 여부를 결정한다. Infrastructure는 결정을 Rigidbody2D에 적용하고, Presentation은 결과를 `PlayerViewState`로 바꿔 View에 알린다. `PlayerPresenter`는 직전 공중 상태에서 접지 상태로 바뀐 순간만 `JustLanded`로 표시하며, `PlayerVisualView`는 이동 속도·수직 속도·접지 여부·착지 pulse를 `CaptainLocomotion.controller`에 전달한다. AnimationClip은 에셋 페이지 기준 10 FPS를 사용한다.
+`PlayerInputView.Update`는 입력을 수집하고 점프를 큐에 보관한다. `FixedUpdate`에서 `IPlayerInputCommands.UpdateMotion`을 호출하고 큐를 소비한다. 비활성화 시 입력 액션을 끄고 큐와 수평 입력을 초기화한다. 입력 어댑터는 출력 상태를 구독하거나 Animator를 조작하지 않는다.
 
-### 현재 표현 흐름의 한계
+Domain의 `PlayerMotionRules`가 속도와 점프 가능 여부를 결정하고, Infrastructure가 Rigidbody2D에 적용한다. Presentation은 Application 결과로 `Idle / Run / Jump / Fall`과 방향을 결정한다. 수평 속도 절댓값 기준은 0.05, 상승·낙하 기준은 0.01, 방향 입력 deadzone은 0.0001이다. 임계값과 정확히 같으면 같은 상태군의 직전 표현을 유지하고 새 상태군에서는 Idle/Fall을 기본값으로 한다. 초기 출력은 오른쪽을 보는 Idle이며 첫 실제 접지 샘플만으로 착지를 만들지 않는다.
 
-현재 상태 알림은 R3가 아니라 C# `event Action<PlayerViewState>`다. Presentation은 View를 참조하지 않으며, View가 이벤트를 구독하고 초기 상태를 별도로 읽는다. Idle·Run·Jump·Fall의 선택 조건과 Land 전환은 Unity의 `CaptainLocomotion.controller`가 소유한다. 따라서 현재 구현은 사용자가 요구한 R3 기반 상태 발행·수동 View 구조를 완성한 상태가 아니다.
+`PlayerPresenter`는 private `ReactiveProperty<PlayerViewState>`와 `Subject<Unit>`를 소유하고 `AsObservable()`로 감싼 `ViewStates`와 `Landed`만 공개한다. 지속 상태를 먼저 갱신한 뒤 관측된 공중→접지 전환의 착지를 한 번 발행한다. 동일한 의미 상태·방향은 재발행하지 않으며 속도 수치만 바뀌는 경우 View가 클립을 재시작하지 않는다. 지속 상태 구독은 최신값을 즉시 받지만, 착지 신호는 구독 이전 것을 재전달하지 않는다.
 
-R3 전환과 의미상의 표현 상태 선택을 Presentation으로 옮기는 작업은 새 세션에서 별도로 계획한다. 아직 구현하지 않은 구조이며, 위 UML은 현재 이벤트 기반 코드를 나타낸다. 인계 범위와 승인 경계는 [DEV-009](development-record/DEV-2026-009-treasure-hunters-playable-demo.md#새-세션-재개-계약)에 기록한다.
+`PlayerVisualView`는 Presenter 전체 대신 두 `Observable`을 받는다. SpriteRenderer 방향 반전과 의미 상태→Animator `Locomotion` int, 착지→`Land` trigger 매핑을 수행한다. Controller에는 속도·접지의 판정 조건이 없다. 기존 5개 10 FPS 클립과 0.05초 전환을 사용한다. Land는 정규화 재생률 0.9 이후 최신 Idle/Run으로 복귀하며 Jump/Fall 출력으로 중단될 수 있다. 클립 길이·종료 시점·블렌딩은 Unity 출력 책임이므로 Presentation에 클립 시간을 넣지 않는다.
+
+### 구독과 소스 수명
+
+출력 View는 초기화되고 활성화된 기간에만 구독한다. `Initialize`가 `OnEnable` 전후 어느 쪽에서 호출돼도 한 번만 연결하며 재초기화는 기존 두 구독을 먼저 해제한다. `OnDisable`·`OnDestroy`는 구독과 pending Land trigger를 정리한다. 재활성화 시 최초 전달된 최신 의미 상태로 Animator를 동기화하고, 비활성화 중 발생한 착지나 이전 Land 클립을 재생하지 않는다. 소스 완료 시에도 구독을 해제하며 종료된 소스에 자동 재구독하지 않는다.
+
+View가 해제하는 것은 구독 핸들이며 발행 객체가 아니다. `PlayerPresenter.Dispose`가 소유한 두 R3 객체를 완료·해제한다. 기존 VContainer singleton 등록은 이 IDisposable을 추적하고 `GameLifetimeScope` 종료 시 해제한다. R3의 `ReadOnlyReactiveProperty`도 Dispose를 노출하므로 출력 API에는 해당 타입을 직접 공개하지 않는다.
+
+`Player.View` 어셈블리는 Unity 입력·출력 어댑터를 함께 소유한다. 출력 전용 경계는 `PlayerVisualView`에 적용하며, 입력을 별도 계층이나 갱신 루프로 옮기지 않는다. 구현·검증 근거는 [DEV-011](development-record/DEV-2026-011-player-reactive-presentation.md)에 보관한다.
+
+### 별도 범위의 접지 판정
+
+`Rigidbody2DPlayerMotor.ReadState`는 여전히 `IsTouchingLayers`로 접지를 판단하며 바닥과 옆면 방향을 구분하지 않는다. Presentation은 이 결과를 별도 속도 조건으로 덮어쓰지 않으므로 옆면 접촉의 착지 오신호 가능성도 남는다. 이 수정은 이동 로직의 별도 작업이다.
 
 ## Composition root
 
@@ -300,7 +319,7 @@ flowchart TD
     Animator --> VisualView
 ```
 
-`GameLifetimeScope`는 씬에서 설정과 Unity 어댑터 참조를 받고 누락 여부를 검증한다. `PlayerInstaller`는 포트 구현체와 순수 객체를 VContainer에 등록한 뒤, 빌드 콜백에서 `PlayerInputView`와 `PlayerVisualView`에 `PlayerPresenter`를 주입한다.
+`GameLifetimeScope`는 씬에서 설정과 Unity 어댑터 참조를 받고 누락 여부를 검증한다. `PlayerInstaller`는 포트 구현체와 순수 객체를 VContainer에 등록한 뒤, 빌드 콜백에서 `PlayerInputView`에는 Presenter의 `IPlayerInputCommands` 계약을, `PlayerVisualView`에는 `ViewStates`와 `Landed` 흐름을 전달한다.
 
 `ArchitectureSandbox`는 32 PPU를 타일·배경·캐릭터의 공통 픽셀 밀도로 사용한다. `Main Camera`의 URP `PixelPerfectCamera`는 384×216 참조 해상도, `UpscaleRenderTexture`, `CropFrame.Windowbox`로 16:9 구도와 정수배 출력을 유지한다. 기본 출력은 FHD 1920×1080(5배)이며 uloop 768×432(2배)에서도 같은 12×6.75유닛 영역을 보여 준다. 비정수배 해상도에서는 남는 영역을 여백으로 처리한다.
 
@@ -346,9 +365,10 @@ Core.Installer ─▶ Feature Installer와 씬 어댑터
 | 루트 composition | [`GameLifetimeScope.cs`](../Assets/Core/Installer/GameLifetimeScope.cs) |
 | Player DI 등록 | [`PlayerInstaller.cs`](../Assets/Feature/Player/Installer/PlayerInstaller.cs) |
 | 입력 진입점 | [`PlayerInputView.cs`](../Assets/Feature/Player/View/PlayerInputView.cs) |
+| 입력 명령 계약 | [`IPlayerInputCommands.cs`](../Assets/Feature/Player/Presentation/IPlayerInputCommands.cs) |
 | 표시 갱신 | [`PlayerVisualView.cs`](../Assets/Feature/Player/View/PlayerVisualView.cs) |
 | Presentation 상태 변환 | [`PlayerPresenter.cs`](../Assets/Feature/Player/Presentation/PlayerPresenter.cs) |
-| 표시 상태 값 | [`PlayerViewState.cs`](../Assets/Feature/Player/Presentation/PlayerViewState.cs) |
+| 의미 상태와 방향 값 | [`PlayerViewState.cs`](../Assets/Feature/Player/Presentation/PlayerViewState.cs) |
 | Application 유스케이스 | [`UpdatePlayerMotionUseCase.cs`](../Assets/Feature/Player/Application/UpdatePlayerMotionUseCase.cs) |
 | 외부 포트 | [`IPlayerMotor.cs`](../Assets/Feature/Player/Application/IPlayerMotor.cs) |
 | 순수 이동 판정 | [`PlayerMotionRules.cs`](../Assets/Feature/Player/Domain/PlayerMotionRules.cs) |

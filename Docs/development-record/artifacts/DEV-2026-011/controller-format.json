@@ -1,0 +1,6 @@
+{
+  "change": "Unity serialization trailing whitespace only after runtime verification",
+  "normalizedContentUnchanged": true,
+  "beforeSha256": "0d8db0fd5d0d6311870b46699b1f5fc2a8a84e409944b90e9ec196f098f5b951",
+  "afterSha256": "075d44a6bb78036861f40746f6d116607e00a27004e8281e44e59537ece71f3d"
+}

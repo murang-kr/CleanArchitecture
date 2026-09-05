@@ -1,0 +1,23 @@
+{
+  "CompileNote": "A compile ran before the tests and succeeded. Pass --skip-compile to run the tests without this compile step.",
+  "CompletedAt": "2026-09-05T06:31:39.8496300Z",
+  "FailedCount": 1,
+  "FailedTests": [
+    {
+      "FullName": "CleanArchitecture.Player.Tests.PlayMode.PlayerInputViewTests.SceneKeyboardJump_DrivesPhysicsSemanticStatesAndLandingAnimation",
+      "Message": "  Expected: greater than -1.04750073f\n  But was:  -1.45246089f\n",
+      "File": "/Users/murang/Developer/Unity/CleanArchitecture/Assets/Tests/PlayMode/Player/PlayerInputViewTests.cs",
+      "Line": 146
+    }
+  ],
+  "HasFailures": true,
+  "Message": "Test execution completed with status: Failed",
+  "NoTestsFound": false,
+  "NoTestsFoundExplanation": "",
+  "PassedCount": 0,
+  "SkippedCount": 0,
+  "Status": "Failed",
+  "Success": false,
+  "TestCount": 1,
+  "XmlPath": "/Users/murang/Developer/Unity/CleanArchitecture/.uloop/outputs/TestResults/20260905_063139_8503700_a151c4485a2146e18b4f1a1249047413.xml"
+}

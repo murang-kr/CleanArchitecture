@@ -39,7 +39,7 @@ namespace CleanArchitecture.Player.Installer
             {
                 var presenter = container.Resolve<PlayerPresenter>();
                 _inputView.Initialize(presenter);
-                _visualView.Initialize(presenter);
+                _visualView.Initialize(presenter.ViewStates, presenter.Landed);
             });
         }
     }
