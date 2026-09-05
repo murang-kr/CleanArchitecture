@@ -4,7 +4,7 @@
 >
 > 최종 코드 검증일: 2026-09-05<br>
 > Unity 버전: 6000.3.20f1<br>
-> 현재 구현 범위: Player 수평 이동·접지 점프와 Animator 표현 코드, 게임 조립 에셋
+> 현재 구현 범위: Player 수평 이동·접지 점프와 Treasure Hunters 시각 데모
 
 ## 문서 원칙
 
@@ -131,7 +131,7 @@ flowchart LR
 
 `Player.Domain`, `Player.Application`, `Player.Presentation`은 asmdef의 `noEngineReferences: true`로 Unity API 직접 사용을 컴파일 단계에서 차단한다.
 
-테스트 어셈블리는 런타임 의존 그래프에 포함하지 않는다. 현재 `CleanArchitecture.Player.EditModeTests`는 `Player.Domain`, `Player.Application`, `Player.Presentation`을 직접 참조해 순수 이동 규칙·유스케이스와 Presenter의 착지 pulse를 검증한다. `CleanArchitecture.Player.PlayModeTests`는 기존 씬의 Player 조립과 접지 점프를 검증한다. Tilemap·Animator를 포함한 데모 씬 회귀 검사는 별도 씬 통합 커밋에 반영한다.
+테스트 어셈블리는 런타임 의존 그래프에 포함하지 않는다. 현재 `CleanArchitecture.Player.EditModeTests`는 `Player.Domain`, `Player.Application`, `Player.Presentation`을 직접 참조해 순수 이동 규칙·유스케이스와 Presenter의 착지 pulse를 검증한다. `CleanArchitecture.Player.PlayModeTests`는 실제 씬에서 조립된 Tilemap·Animator·Rigidbody2D 경로를 검증한다.
 
 ## Player 주요 타입 UML
 
@@ -253,39 +253,68 @@ sequenceDiagram
     end
 ```
 
-`PlayerInputView.Update`는 입력을 수집하고 점프를 큐에 보관한다. 물리 상태 변경은 `FixedUpdate`에서 시작되며, Domain의 `PlayerMotionRules`가 속도와 점프 가능 여부를 결정한다. Infrastructure는 결정을 Rigidbody2D에 적용하고, Presentation은 결과를 `PlayerViewState`로 바꿔 View에 알린다. `PlayerPresenter`는 직전 공중 상태에서 접지 상태로 바뀐 순간만 `JustLanded`로 표시하며, `PlayerVisualView`는 이동 속도·수직 속도·접지 여부·착지 pulse를 `CaptainLocomotion.controller`에 전달한다. AnimationClip은 에셋 페이지 기준 10 FPS를 사용한다. AnimatorController가 할당되지 않은 기존 씬에서는 표현 갱신을 건너뛰며, 데모 씬의 시각 자식과 Controller 참조 연결은 후속 씬 통합 커밋에 반영한다.
+`PlayerInputView.Update`는 입력을 수집하고 점프를 큐에 보관한다. 물리 상태 변경은 `FixedUpdate`에서 시작되며, Domain의 `PlayerMotionRules`가 속도와 점프 가능 여부를 결정한다. Infrastructure는 결정을 Rigidbody2D에 적용하고, Presentation은 결과를 `PlayerViewState`로 바꿔 View에 알린다. `PlayerPresenter`는 직전 공중 상태에서 접지 상태로 바뀐 순간만 `JustLanded`로 표시하며, `PlayerVisualView`는 이동 속도·수직 속도·접지 여부·착지 pulse를 `CaptainLocomotion.controller`에 전달한다. AnimationClip은 에셋 페이지 기준 10 FPS를 사용한다.
+
+### 현재 표현 흐름의 한계
+
+현재 상태 알림은 R3가 아니라 C# `event Action<PlayerViewState>`다. Presentation은 View를 참조하지 않으며, View가 이벤트를 구독하고 초기 상태를 별도로 읽는다. Idle·Run·Jump·Fall의 선택 조건과 Land 전환은 Unity의 `CaptainLocomotion.controller`가 소유한다. 따라서 현재 구현은 사용자가 요구한 R3 기반 상태 발행·수동 View 구조를 완성한 상태가 아니다.
+
+R3 전환과 의미상의 표현 상태 선택을 Presentation으로 옮기는 작업은 새 세션에서 별도로 계획한다. 아직 구현하지 않은 구조이며, 위 UML은 현재 이벤트 기반 코드를 나타낸다. 인계 범위와 승인 경계는 [DEV-009](development-record/DEV-2026-009-treasure-hunters-playable-demo.md#새-세션-재개-계약)에 기록한다.
 
 ## Composition root
 
 ```mermaid
 flowchart TD
     Scene["ArchitectureSandbox Scene"]
+    Camera["Main Camera"]
+    PixelPerfect["PixelPerfectCamera<br/>32 PPU · 384×216 · Windowbox"]
     Scope["GameLifetimeScope"]
     FeatureInstaller["PlayerInstaller"]
     Container["VContainer"]
     Settings["PlayerMovementSettings"]
+    PlayerRoot["Player<br/>입력 · Rigidbody2D · Collider"]
+    PlayerVisual["Player/Visual<br/>Scale 1 · 원본 픽셀 크기"]
     Motor["Rigidbody2DPlayerMotor"]
     InputView["PlayerInputView"]
     VisualView["PlayerVisualView"]
+    Environment["Environment<br/>배경 · 전경 야자수 · Palm Terrain · 충돌"]
+    Animator["CaptainLocomotion Animator"]
 
+    Scene --> Camera
+    Camera --> PixelPerfect
     Scene --> Scope
     Scene --> Settings
-    Scene --> Motor
-    Scene --> InputView
-    Scene --> VisualView
+    Scene --> PlayerRoot
+    PlayerRoot --> Motor
+    PlayerRoot --> InputView
+    PlayerRoot --> PlayerVisual
+    PlayerVisual --> VisualView
+    PlayerVisual --> Animator
+    Scene --> Environment
     Scope --> FeatureInstaller
     FeatureInstaller --> Container
     Settings --> FeatureInstaller
     Motor --> FeatureInstaller
     InputView --> FeatureInstaller
     VisualView --> FeatureInstaller
+    Animator --> VisualView
 ```
 
 `GameLifetimeScope`는 씬에서 설정과 Unity 어댑터 참조를 받고 누락 여부를 검증한다. `PlayerInstaller`는 포트 구현체와 순수 객체를 VContainer에 등록한 뒤, 빌드 콜백에서 `PlayerInputView`와 `PlayerVisualView`에 `PlayerPresenter`를 주입한다.
 
+`ArchitectureSandbox`는 32 PPU를 타일·배경·캐릭터의 공통 픽셀 밀도로 사용한다. `Main Camera`의 URP `PixelPerfectCamera`는 384×216 참조 해상도, `UpscaleRenderTexture`, `CropFrame.Windowbox`로 16:9 구도와 정수배 출력을 유지한다. 기본 출력은 FHD 1920×1080(5배)이며 uloop 768×432(2배)에서도 같은 12×6.75유닛 영역을 보여 준다. 비정수배 해상도에서는 남는 영역을 여백으로 처리한다.
+
+같은 Camera에 URP 렌더링 보조 컴포넌트 `UniversalAdditionalCameraData`도 저장돼 있다. 게임 입력·물리·DI 계층에는 관여하지 않는다.
+
+Player 루트는 입력·Rigidbody2D·BoxCollider2D를, 자식 `Visual`은 SpriteRenderer·Animator·PlayerVisualView를 소유한다. 루트와 시각 자식 모두 Scale `(1,1,1)`이며, Captain 원본의 투명 여백을 고려해 Visual의 로컬 Y는 -0.0625, 충돌체 크기는 0.625×0.875유닛으로 맞췄다. 크기를 바꾸려고 개별 PPU나 Transform 배율을 변경하지 않는다. 좌우 반전은 `SpriteRenderer.flipX`를 사용한다.
+
+`Environment`는 `Background`의 Sky·Base·Clouds·Water 레이어, `Decorations`의 조립식 Front Palm Tree, 1×1 Grid의 Palm Terrain Tilemap, 별도 BoxCollider2D 충돌 영역을 소유한다. 배경은 원본 크기와 타일링으로 채우고, 야자수는 Scale 1의 줄기 세 개와 수관 한 개로 조립한다. 지면·중앙·좌우 플랫폼의 윗면은 각각 Y=-2·-1·0으로 기존 이동 로직의 점프 범위 안에서 연결한다.
+
 ### 픽셀 아트 임포트와 회귀 방지
 
 [`PixelArtTexturePostprocessor`](../Assets/Editor/PixelArtTexturePostprocessor.cs)는 `Assets/Content/`의 텍스처를 Sprite·PPU 32·Point·무압축·mipmap 해제·NPOT 원본 유지로 임포트한다. 기존 분할·피벗·Sprite Mode는 보존한다. Unity의 기본 Editor 어셈블리에만 속하며 런타임 Feature 계층이나 asmdef 그래프에는 참여하지 않는다. 출처 팩과 생성형 에셋에 같은 기준을 적용하며 상세 관리 규칙은 [에셋 출처 문서](Asset-Provenance.md)에 둔다.
+
+`PlayerMovementSmokeTests`는 씬의 모든 Transform과 부모 배율, Sprite·Tile의 PPU, Grid 셀 크기와 Tile 변환, 카메라 Crop, 접지 정렬을 검사한다. 배율을 런타임에서 몰래 덮어쓰는 보정 코드는 추가하지 않는다. 원본 측정·적용·검증 기록은 [DEV-2026-009](development-record/DEV-2026-009-treasure-hunters-playable-demo.md)에 보관한다.
 
 ## 의존 규칙
 
@@ -325,6 +354,7 @@ Core.Installer ─▶ Feature Installer와 씬 어댑터
 | 순수 이동 판정 | [`PlayerMotionRules.cs`](../Assets/Feature/Player/Domain/PlayerMotionRules.cs) |
 | Physics2D 구현 | [`Rigidbody2DPlayerMotor.cs`](../Assets/Feature/Player/Infrastructure/Rigidbody2DPlayerMotor.cs) |
 | 설정 구현 | [`PlayerMovementSettings.cs`](../Assets/Feature/Player/Infrastructure/PlayerMovementSettings.cs) |
+| 데모 씬 | [`ArchitectureSandbox.unity`](../Assets/Scenes/ArchitectureSandbox.unity) |
 | Captain Animator | [`CaptainLocomotion.controller`](../Assets/Content/Game/Player/Animator/CaptainLocomotion.controller) |
 
 어셈블리 직접 참조의 최종 근거는 각 계층의 `.asmdef` 파일이다. 산문이나 다이어그램이 실제 코드와 다르면 asmdef와 실행 코드를 먼저 확인하고 이 문서를 수정한다.

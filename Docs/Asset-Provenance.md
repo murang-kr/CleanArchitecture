@@ -42,7 +42,7 @@
 - 런타임 경로: `Assets/Content/ThirdParty/PixelFrog/TreasureHunters/`
 - 가져온 범위: 해제본의 PNG 1,204개
 - 제외한 범위: Aseprite 21개, `.DS_Store`, ZIP 메타데이터
-- 현재 용도: 횡스크롤 Player, Enemy, 함정, 아이템, 환경 타일과 UI 후보
+- 현재 용도: `ArchitectureSandbox`의 Captain 이동 5종 애니메이션, Palm Tree Island 지형·배경·야자수에 사용. 나머지는 Enemy·함정·아이템·환경·UI 후보
 - 수정 사항: PNG 원본 변경 없음. 전체 Unity 임포트 PPU 32 및 공통 픽셀 아트 설정, 데모 Terrain·야자수 부품 Sprite 분할 적용
 - 크레딧 의무: 없음
 - 자발적 크레딧: Pixel Frog와 원본 URL 표기 예정
