@@ -20,6 +20,14 @@ tags: []
 >
 > `status`는 별도 승인이 필요하면 `planned → approved → in_progress → completed`, 명확한 요청 범위의 자율 작업이면 `in_progress → completed`로 갱신한다. `approval_required`와 `authorization_basis`에 승인 필요 여부와 요청·승인 근거를 기록한다. 자율 착수를 별도 계획 승인으로 기록하지 않는다. 진행을 멈춰야 하면 `blocked`와 재개 조건을 기록한다. `plan_review`는 `pending`, `okay`, `blocked`, `not_required` 중 하나를 사용한다.
 
+## 검증 산출물 보관 규칙
+
+- 스크린샷은 `Docs/development-record/artifacts/local/<DEV-ID>/`에 로컬 보관하고 Git에 커밋하지 않는다. `.gitignore`는 `artifacts/local/`만 제외하며 `artifacts/` 전체나 `*.png` 전체를 제외하지 않는다.
+- 새 캡처도 같은 경로를 출력 대상으로 사용한다. 예: `uloop screenshot --capture-mode rendering --output-directory Docs/development-record/artifacts/local/DEV-2026-009`.
+- 로컬 스크린샷은 clone에 포함되지 않으므로 문서의 필수 이미지·Markdown 링크로 연결하지 않는다. 필요하면 `로컬 전용·Git 미포함`을 명시하고 개발 기록 기준 상대경로를 코드 형태로 안내한다.
+- Git에 남기는 기록에는 이미지 없이도 판단할 수 있도록 재현 명령, 실행 대상·해상도, 검증 수치, 결론과 한계를 적는다. 텍스트·JSON 검증 자료는 기존처럼 `artifacts/` 아래에서 선별해 추적한다.
+- Git 제외는 삭제나 백업을 의미하지 않는다. 로컬 파일 삭제는 별도 승인 후 진행하며, 삭제된 미추적 스크린샷은 Git으로 복구할 수 없다.
+
 # 목표
 
 ## 배경
@@ -133,7 +141,7 @@ tags: []
 - 재실행한 항목과 그 이유
 - 요구사항별 증거 매핑(여러 요구사항이 있는 작업)
 - 예상 결과와 실제 결과
-- 빌드, 스크린샷, 프로파일링 결과 링크
+- 추적하는 빌드·프로파일링 결과 링크와 로컬 전용 스크린샷 경로 안내
 - 검증하지 못한 항목
 
 # 최종 결과

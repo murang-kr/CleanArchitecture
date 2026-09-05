@@ -45,3 +45,6 @@ sysinfo.txt
 # Local source-asset archives
 SourceAssets/ThirdParty/**/*.zip
 .codex/hook-state
+
+# Local verification screenshots (text and JSON evidence remain tracked)
+/Docs/development-record/artifacts/local/
