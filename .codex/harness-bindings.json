@@ -1,6 +1,7 @@
 {
   "oracle": {
     "compile": "/Applications/Unity/Hub/Editor/6000.3.20f1/Unity.app/Contents/MacOS/Unity -batchmode -quit -projectPath /Users/murang/Developer/Unity/CleanArchitecture -logFile -",
-    "test": "/Applications/Unity/Hub/Editor/6000.3.20f1/Unity.app/Contents/MacOS/Unity -batchmode -projectPath /Users/murang/Developer/Unity/CleanArchitecture -runTests -testPlatform EditMode -testResults /Users/murang/Developer/Unity/CleanArchitecture/Logs/EditModeTestResults.xml -logFile -"
+    "test": "/Applications/Unity/Hub/Editor/6000.3.20f1/Unity.app/Contents/MacOS/Unity -batchmode -projectPath /Users/murang/Developer/Unity/CleanArchitecture -runTests -testPlatform EditMode -testResults /Users/murang/Developer/Unity/CleanArchitecture/Logs/EditModeTestResults.xml -logFile -",
+    "harness": "node --test .codex/hooks/tests/*.test.js .agents/skills/unity-vcs-evidence/scripts/unity-vcs-evidence.test.js"
   }
 }

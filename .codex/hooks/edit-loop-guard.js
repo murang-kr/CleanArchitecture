@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 // PostToolUse 훅 (matcher: apply_patch|Bash)
 // apply_patch의 패치 텍스트에서 수정 파일 경로를 파싱해, 같은 파일을 서로 다른
-// THRESHOLD개 턴에서 수정하면 decision "block"으로 invariant-audit 스킬 절차를 지시한다.
+// THRESHOLD개 턴에서 편집 요청이 관측되면 비차단 참고 문맥을 추가한다.
+// 성공·실패 또는 같은 문제인지 판정하지 않는다. 도구 결과를 대체하지 않는다.
 // 발동 후 해당 파일 카운터는 리셋.
 // Claude Code 원본과의 차이: 도구가 Edit/Write가 아니라 apply_patch이므로
 // tool_input.command의 "*** Update|Add File: <경로>" 헤더에서 경로를 뽑는다.
-// 계약: 내부 오류는 삼키고 exit 0 (fail-open). 발동 시에만 block JSON 출력.
+// 계약: 내부 오류는 삼키고 exit 0 (fail-open). 발동 시에만 additionalContext 출력.
 const fs = require('fs'), path = require('path');
 const THRESHOLD = 3;
 // 하네스 메타 파일(설정·스킬·훅·임시 폴더)은 감시 대상이 아님
-const EXCLUDES = ['/.codex/', '/.claude/', '/appdata/local/temp/', '/tmp/'];
+const EXCLUDES = ['/.agents/', '/.codex/', '/.claude/', '/appdata/local/temp/', '/tmp/'];
 try {
   const input = JSON.parse(fs.readFileSync(0, 'utf8') || '{}');
   const sid = String(input.session_id || 'unknown').replace(/[^a-zA-Z0-9_-]/g, '');
@@ -50,10 +51,12 @@ try {
 
   if (firedPath) {
     process.stdout.write(JSON.stringify({
-      decision: 'block',
-      reason:
-        `[edit-loop guard] 이 파일을 서로 다른 ${THRESHOLD}개 턴에서 수정했다: ${firedPath}\n` +
-        `발산(같은 문제를 반복 패치) 가능성이 있다. 다음 수정을 시도하기 전에 .agents/skills/invariant-audit/SKILL.md를 읽고 그 절차(면제 판정 포함)를 따르고, 끝나면 원래 작업으로 복귀하라.`
+      hookSpecificOutput: {
+        hookEventName: 'PostToolUse',
+        additionalContext:
+          `[edit-loop] 서로 다른 ${THRESHOLD}개 턴에서 이 파일의 편집 요청이 관측됐다: ${firedPath}\n` +
+          `성공·실패나 같은 문제의 반복 여부는 판정하지 않은 참고 정보다. 독립 요청·단계적 구현·사용자 튜닝이면 그대로 진행한다. 실제로 같은 문제의 실패가 반복될 때만 .agents/skills/invariant-audit/SKILL.md로 원인을 재검토한다. 이 알림만으로 중단·승인 요청·면제 보고를 하지 않는다.`
+      }
     }));
   }
 } catch {}

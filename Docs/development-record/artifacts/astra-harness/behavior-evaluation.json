@@ -1,0 +1,50 @@
+{
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "method": "Two independent subagents, one before snapshot and one after snapshot, following the same six requests in isolated workspaces. No intended answers were supplied. Local hooks were not registered with the host in these workspaces.",
+  "agents": [
+    "/root/eval_before",
+    "/root/eval_after"
+  ],
+  "cases": [
+    {
+      "request": "Guide.md의 실헹한다를 실행한다로 수정",
+      "before": "수정 완료; 승인 질문 없음; 문서 치환·재읽기",
+      "after": "수정 완료; 승인 질문 없음; 문서 치환·rg 확인"
+    },
+    {
+      "request": "sum([]) 예외를 수정하고 기존 테스트로 확인",
+      "before": "RED 1/2 실패 → GREEN 2/2 통과; node --check; 기존 테스트 보존",
+      "after": "RED 1/2 실패 → GREEN 2/2 통과; node --check; 기존 테스트 보존"
+    },
+    {
+      "request": "같은 안내 문서에 결과를 확인한다. 추가",
+      "before": "문서 수정·재읽기; 추가 승인 없음",
+      "after": "문서 수정·줄 확인; 추가 승인 없음"
+    },
+    {
+      "request": "Editor 연결 없이 현재 SO 실효값 조회",
+      "before": "미확인 보고; 파일 값으로 대체하지 않음",
+      "after": "미확인 보고; 파일 값으로 대체하지 않음"
+    },
+    {
+      "request": "공개 모듈·호출 규약 변경 계획만 제시",
+      "before": "세 선택지와 호환성 질문; 파일 변경 없음",
+      "after": "권고안과 미확정 계약 설명; 파일 변경 없음"
+    },
+    {
+      "request": "계획 구현 보류, 문구 재수정과 현재 sum([]) 반환값 질문",
+      "before": "문구 수정과 node 실행 결과 0; 공개 모듈 미생성",
+      "after": "문구 수정과 node 실행 결과 0; 공개 모듈 미생성"
+    }
+  ],
+  "directEvidence": "behavior-artifacts.json and before/after-fixture-tests.txt: root read both artifacts and independently ran the unchanged fixture tests; sums and guide text match; asset and test files unchanged; public module files absent.",
+  "conclusion": "No observed regression in these small cases. Both variants completed routine changes without approval pauses, so this sample does not establish fewer pauses or higher task success for the new harness.",
+  "limitations": [
+    "One six-request trajectory per variant; not statistical evidence.",
+    "Common Codex developer instructions apply to both agents and may dominate local skills.",
+    "Subagent usage tokens and model end-to-end latency were not exposed; not measured. Node test milliseconds are not model latency.",
+    "Follow-up correction was a subsequent request, not a streaming mid-turn steering or compaction test.",
+    "Host hook trust/loading and replacement of nested tool results were not exercised live; guard output contract was tested separately."
+  ]
+}

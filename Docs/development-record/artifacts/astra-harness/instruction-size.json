@@ -1,0 +1,14 @@
+{
+  "project": {
+    "instructionCharactersBefore": 22391,
+    "instructionCharactersAfter": 18541,
+    "reductionPercent": 17.2,
+    "note": "characters, not tokenizer counts; on-demand skills are not all injected at once"
+  },
+  "template": {
+    "instructionCharactersBefore": 18884,
+    "instructionCharactersAfter": 17299,
+    "reductionPercent": 8.4,
+    "note": "characters, not tokenizer counts; on-demand skills are not all injected at once"
+  }
+}

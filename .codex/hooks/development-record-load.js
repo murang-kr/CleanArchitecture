@@ -4,6 +4,13 @@
 // 세부 기록의 생성·갱신 정책은 프로젝트 AGENTS.md의 "개발 기록 정책" 절에 있다.
 // 계약: 내부 오류는 삼키고 항상 exit 0 (fail-open).
 const fs = require('fs'), path = require('path');
+// '['로 시작하는 일반 텍스트는 호스트가 JSON으로 판별할 수 있다.
+// 문맥을 명시적인 SessionStart JSON으로 감싸 출력 형식의 모호성을 없앤다.
+function emitContext(additionalContext) {
+  process.stdout.write(JSON.stringify({
+    hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext }
+  }));
+}
 try {
   const projectRoot = path.resolve(__dirname, '..', '..');
   const recordDir = path.join(projectRoot, 'Docs', 'development-record');
@@ -15,7 +22,7 @@ try {
     : `\n[development-record] 공용 포맷이 없다: ${formatPath}`;
 
   if (fs.existsSync(indexPath)) {
-    process.stdout.write(
+    emitContext(
       `[development-record] 작업 기록 디렉터리: ${recordDir}\n` +
       `아래는 개발 기록 인덱스다. 과거 맥락이 필요하면 인덱스에서 관련 항목을 찾은 뒤 해당 기록만 읽는다. 운용 규칙은 프로젝트 AGENTS.md의 "개발 기록 정책" 절.\n` +
       `--- Index.md ---\n` +
@@ -23,7 +30,7 @@ try {
       formatWarning
     );
   } else {
-    process.stdout.write(
+    emitContext(
       `[development-record] 개발 기록 인덱스가 없다: ${indexPath}. ` +
       `프로젝트 AGENTS.md의 "개발 기록 정책" 절에 따라 디렉터리와 Index.md를 생성하라.` +
       formatWarning

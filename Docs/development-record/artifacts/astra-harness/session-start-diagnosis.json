@@ -1,0 +1,543 @@
+{
+  "cliVersion": "0.153.3",
+  "diagnosis": "SessionStart executes; legacy bracket-prefixed stdout is rejected as invalid session start JSON. Explicit hookSpecificOutput JSON fixes delivery.",
+  "scope": "Same installed app-server, ephemeral first-turn integration; desktop UI creation not repeated.",
+  "runs": {
+    "before": {
+      "hooksList": {
+        "cwd": "/Users/murang/Developer/Unity/CleanArchitecture",
+        "hooks": [
+          {
+            "key": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json:pre_tool_use:0:0",
+            "eventName": "preToolUse",
+            "handlerType": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/git-commit-confirm.js\"",
+            "async": false,
+            "matcher": "Bash",
+            "timeoutSec": 10,
+            "statusMessage": "git 상태 변경 컨펌 게이트 확인 중",
+            "additionalContextLimit": null,
+            "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+            "source": "project",
+            "pluginId": null,
+            "displayOrder": 0,
+            "enabled": true,
+            "isManaged": false,
+            "currentHash": "sha256:a6671c8d49525e477f9aeefeecd32723d4cf007b351688b633daa96311b5fa35",
+            "trustStatus": "trusted"
+          },
+          {
+            "key": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json:post_tool_use:0:0",
+            "eventName": "postToolUse",
+            "handlerType": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/edit-loop-guard.js\"",
+            "async": false,
+            "matcher": "apply_patch|Bash",
+            "timeoutSec": 10,
+            "statusMessage": "편집 참고 알림 확인 중",
+            "additionalContextLimit": null,
+            "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+            "source": "project",
+            "pluginId": null,
+            "displayOrder": 1,
+            "enabled": true,
+            "isManaged": false,
+            "currentHash": "sha256:a9e926dda0f1581352eec8e61e5bdd499d733eec6807eea1071f188fe58d5f44",
+            "trustStatus": "trusted"
+          },
+          {
+            "key": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json:session_start:0:0",
+            "eventName": "sessionStart",
+            "handlerType": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/harness-doctor.js\"",
+            "async": false,
+            "matcher": null,
+            "timeoutSec": 15,
+            "statusMessage": "하네스 닥터 검사 중",
+            "additionalContextLimit": null,
+            "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+            "source": "project",
+            "pluginId": null,
+            "displayOrder": 2,
+            "enabled": true,
+            "isManaged": false,
+            "currentHash": "sha256:e7024d68d7a40730eaed4c542ee56d18b2e71c7feab5f4f1189333ea93860446",
+            "trustStatus": "trusted"
+          },
+          {
+            "key": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json:session_start:0:1",
+            "eventName": "sessionStart",
+            "handlerType": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/development-record-load.js\"",
+            "async": false,
+            "matcher": null,
+            "timeoutSec": 10,
+            "statusMessage": "개발 기록 인덱스 로드 중",
+            "additionalContextLimit": null,
+            "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+            "source": "project",
+            "pluginId": null,
+            "displayOrder": 3,
+            "enabled": true,
+            "isManaged": false,
+            "currentHash": "sha256:3f5782a72e08d6cba6994eaa080bf500b9b0da2658ef983e5cdc7f2c5ef94b51",
+            "trustStatus": "trusted"
+          },
+          {
+            "key": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json:user_prompt_submit:0:0",
+            "eventName": "userPromptSubmit",
+            "handlerType": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/edit-loop-turn-bump.js\"",
+            "async": false,
+            "matcher": null,
+            "timeoutSec": 10,
+            "statusMessage": "턴 카운터 갱신 중",
+            "additionalContextLimit": null,
+            "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+            "source": "project",
+            "pluginId": null,
+            "displayOrder": 4,
+            "enabled": true,
+            "isManaged": false,
+            "currentHash": "sha256:fa94023aa93184a381cbc28de0ab2649969c5e44d5e6224cf50170b08c0d3856",
+            "trustStatus": "trusted"
+          }
+        ],
+        "warnings": [],
+        "errors": []
+      },
+      "hookEvents": [
+        {
+          "method": "hook/started",
+          "params": {
+            "threadId": "01a06f81-3447-72c3-8c67-4ed15e618cbb",
+            "turnId": "01a06f81-348b-7380-ad08-8a59e89123f1",
+            "run": {
+              "id": "session-start:2:/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "eventName": "sessionStart",
+              "handlerType": "command",
+              "executionMode": "sync",
+              "scope": "thread",
+              "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "source": "project",
+              "displayOrder": 2,
+              "status": "running",
+              "statusMessage": "하네스 닥터 검사 중",
+              "startedAt": 1788577135,
+              "completedAt": null,
+              "durationMs": null,
+              "entries": []
+            }
+          },
+          "emittedAtMs": 1788577135472
+        },
+        {
+          "method": "hook/started",
+          "params": {
+            "threadId": "01a06f81-3447-72c3-8c67-4ed15e618cbb",
+            "turnId": "01a06f81-348b-7380-ad08-8a59e89123f1",
+            "run": {
+              "id": "session-start:3:/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "eventName": "sessionStart",
+              "handlerType": "command",
+              "executionMode": "sync",
+              "scope": "thread",
+              "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "source": "project",
+              "displayOrder": 3,
+              "status": "running",
+              "statusMessage": "개발 기록 인덱스 로드 중",
+              "startedAt": 1788577135,
+              "completedAt": null,
+              "durationMs": null,
+              "entries": []
+            }
+          },
+          "emittedAtMs": 1788577135472
+        },
+        {
+          "method": "hook/completed",
+          "params": {
+            "threadId": "01a06f81-3447-72c3-8c67-4ed15e618cbb",
+            "turnId": "01a06f81-348b-7380-ad08-8a59e89123f1",
+            "run": {
+              "id": "session-start:2:/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "eventName": "sessionStart",
+              "handlerType": "command",
+              "executionMode": "sync",
+              "scope": "thread",
+              "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "source": "project",
+              "displayOrder": 2,
+              "status": "completed",
+              "statusMessage": "하네스 닥터 검사 중",
+              "startedAt": 1788577135,
+              "completedAt": 1788577135,
+              "durationMs": 86,
+              "entries": []
+            }
+          },
+          "emittedAtMs": 1788577135558
+        },
+        {
+          "method": "hook/completed",
+          "params": {
+            "threadId": "01a06f81-3447-72c3-8c67-4ed15e618cbb",
+            "turnId": "01a06f81-348b-7380-ad08-8a59e89123f1",
+            "run": {
+              "id": "session-start:3:/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "eventName": "sessionStart",
+              "handlerType": "command",
+              "executionMode": "sync",
+              "scope": "thread",
+              "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "source": "project",
+              "displayOrder": 3,
+              "status": "failed",
+              "statusMessage": "개발 기록 인덱스 로드 중",
+              "startedAt": 1788577135,
+              "completedAt": 1788577135,
+              "durationMs": 76,
+              "entries": [
+                {
+                  "kind": "error",
+                  "text": "hook returned invalid session start JSON output"
+                }
+              ]
+            }
+          },
+          "emittedAtMs": 1788577135558
+        },
+        {
+          "method": "hook/started",
+          "params": {
+            "threadId": "01a06f81-3447-72c3-8c67-4ed15e618cbb",
+            "turnId": "01a06f81-348b-7380-ad08-8a59e89123f1",
+            "run": {
+              "id": "user-prompt-submit:4:/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "eventName": "userPromptSubmit",
+              "handlerType": "command",
+              "executionMode": "sync",
+              "scope": "turn",
+              "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "source": "project",
+              "displayOrder": 4,
+              "status": "running",
+              "statusMessage": "턴 카운터 갱신 중",
+              "startedAt": 1788577135,
+              "completedAt": null,
+              "durationMs": null,
+              "entries": []
+            }
+          },
+          "emittedAtMs": 1788577135558
+        },
+        {
+          "method": "hook/completed",
+          "params": {
+            "threadId": "01a06f81-3447-72c3-8c67-4ed15e618cbb",
+            "turnId": "01a06f81-348b-7380-ad08-8a59e89123f1",
+            "run": {
+              "id": "user-prompt-submit:4:/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "eventName": "userPromptSubmit",
+              "handlerType": "command",
+              "executionMode": "sync",
+              "scope": "turn",
+              "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "source": "project",
+              "displayOrder": 4,
+              "status": "completed",
+              "statusMessage": "턴 카운터 갱신 중",
+              "startedAt": 1788577135,
+              "completedAt": 1788577135,
+              "durationMs": 45,
+              "entries": []
+            }
+          },
+          "emittedAtMs": 1788577135603
+        }
+      ],
+      "modelAnswers": [
+        "NO"
+      ],
+      "toolCalls": [],
+      "turnCompleted": true
+    },
+    "after": {
+      "hooksList": {
+        "cwd": "/Users/murang/Developer/Unity/CleanArchitecture",
+        "hooks": [
+          {
+            "key": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json:pre_tool_use:0:0",
+            "eventName": "preToolUse",
+            "handlerType": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/git-commit-confirm.js\"",
+            "async": false,
+            "matcher": "Bash",
+            "timeoutSec": 10,
+            "statusMessage": "git 상태 변경 컨펌 게이트 확인 중",
+            "additionalContextLimit": null,
+            "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+            "source": "project",
+            "pluginId": null,
+            "displayOrder": 0,
+            "enabled": true,
+            "isManaged": false,
+            "currentHash": "sha256:a6671c8d49525e477f9aeefeecd32723d4cf007b351688b633daa96311b5fa35",
+            "trustStatus": "trusted"
+          },
+          {
+            "key": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json:post_tool_use:0:0",
+            "eventName": "postToolUse",
+            "handlerType": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/edit-loop-guard.js\"",
+            "async": false,
+            "matcher": "apply_patch|Bash",
+            "timeoutSec": 10,
+            "statusMessage": "편집 참고 알림 확인 중",
+            "additionalContextLimit": null,
+            "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+            "source": "project",
+            "pluginId": null,
+            "displayOrder": 1,
+            "enabled": true,
+            "isManaged": false,
+            "currentHash": "sha256:a9e926dda0f1581352eec8e61e5bdd499d733eec6807eea1071f188fe58d5f44",
+            "trustStatus": "trusted"
+          },
+          {
+            "key": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json:session_start:0:0",
+            "eventName": "sessionStart",
+            "handlerType": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/harness-doctor.js\"",
+            "async": false,
+            "matcher": null,
+            "timeoutSec": 15,
+            "statusMessage": "하네스 닥터 검사 중",
+            "additionalContextLimit": null,
+            "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+            "source": "project",
+            "pluginId": null,
+            "displayOrder": 2,
+            "enabled": true,
+            "isManaged": false,
+            "currentHash": "sha256:e7024d68d7a40730eaed4c542ee56d18b2e71c7feab5f4f1189333ea93860446",
+            "trustStatus": "trusted"
+          },
+          {
+            "key": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json:session_start:0:1",
+            "eventName": "sessionStart",
+            "handlerType": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/development-record-load.js\"",
+            "async": false,
+            "matcher": null,
+            "timeoutSec": 10,
+            "statusMessage": "개발 기록 인덱스 로드 중",
+            "additionalContextLimit": null,
+            "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+            "source": "project",
+            "pluginId": null,
+            "displayOrder": 3,
+            "enabled": true,
+            "isManaged": false,
+            "currentHash": "sha256:3f5782a72e08d6cba6994eaa080bf500b9b0da2658ef983e5cdc7f2c5ef94b51",
+            "trustStatus": "trusted"
+          },
+          {
+            "key": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json:user_prompt_submit:0:0",
+            "eventName": "userPromptSubmit",
+            "handlerType": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/edit-loop-turn-bump.js\"",
+            "async": false,
+            "matcher": null,
+            "timeoutSec": 10,
+            "statusMessage": "턴 카운터 갱신 중",
+            "additionalContextLimit": null,
+            "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+            "source": "project",
+            "pluginId": null,
+            "displayOrder": 4,
+            "enabled": true,
+            "isManaged": false,
+            "currentHash": "sha256:fa94023aa93184a381cbc28de0ab2649969c5e44d5e6224cf50170b08c0d3856",
+            "trustStatus": "trusted"
+          }
+        ],
+        "warnings": [],
+        "errors": []
+      },
+      "hookEvents": [
+        {
+          "method": "hook/started",
+          "params": {
+            "threadId": "01a06f83-5222-7971-b528-45df494242b9",
+            "turnId": "01a06f83-5261-7000-99fb-b5f4fb709266",
+            "run": {
+              "id": "session-start:2:/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "eventName": "sessionStart",
+              "handlerType": "command",
+              "executionMode": "sync",
+              "scope": "thread",
+              "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "source": "project",
+              "displayOrder": 2,
+              "status": "running",
+              "statusMessage": "하네스 닥터 검사 중",
+              "startedAt": 1788577274,
+              "completedAt": null,
+              "durationMs": null,
+              "entries": []
+            }
+          },
+          "emittedAtMs": 1788577274019
+        },
+        {
+          "method": "hook/started",
+          "params": {
+            "threadId": "01a06f83-5222-7971-b528-45df494242b9",
+            "turnId": "01a06f83-5261-7000-99fb-b5f4fb709266",
+            "run": {
+              "id": "session-start:3:/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "eventName": "sessionStart",
+              "handlerType": "command",
+              "executionMode": "sync",
+              "scope": "thread",
+              "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "source": "project",
+              "displayOrder": 3,
+              "status": "running",
+              "statusMessage": "개발 기록 인덱스 로드 중",
+              "startedAt": 1788577274,
+              "completedAt": null,
+              "durationMs": null,
+              "entries": []
+            }
+          },
+          "emittedAtMs": 1788577274019
+        },
+        {
+          "method": "hook/completed",
+          "params": {
+            "threadId": "01a06f83-5222-7971-b528-45df494242b9",
+            "turnId": "01a06f83-5261-7000-99fb-b5f4fb709266",
+            "run": {
+              "id": "session-start:2:/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "eventName": "sessionStart",
+              "handlerType": "command",
+              "executionMode": "sync",
+              "scope": "thread",
+              "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "source": "project",
+              "displayOrder": 2,
+              "status": "completed",
+              "statusMessage": "하네스 닥터 검사 중",
+              "startedAt": 1788577274,
+              "completedAt": 1788577274,
+              "durationMs": 82,
+              "entries": []
+            }
+          },
+          "emittedAtMs": 1788577274101
+        },
+        {
+          "method": "hook/completed",
+          "params": {
+            "threadId": "01a06f83-5222-7971-b528-45df494242b9",
+            "turnId": "01a06f83-5261-7000-99fb-b5f4fb709266",
+            "run": {
+              "id": "session-start:3:/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "eventName": "sessionStart",
+              "handlerType": "command",
+              "executionMode": "sync",
+              "scope": "thread",
+              "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "source": "project",
+              "displayOrder": 3,
+              "status": "completed",
+              "statusMessage": "개발 기록 인덱스 로드 중",
+              "startedAt": 1788577274,
+              "completedAt": 1788577274,
+              "durationMs": 73,
+              "entries": [
+                {
+                  "kind": "context",
+                  "text": "[development-record] 작업 기록 디렉터리: /Users/murang/Developer/Unity/CleanArchitecture/Docs/development-record\n아래는 개발 기록 인덱스다. 과거 맥락이 필요하면 인덱스에서 관련 항목을 찾은 뒤 해당 기록만 읽는다. 운용 규칙은 프로젝트 AGENTS.md의 \"개발 기록 정책\" 절.\n--- Index.md ---\n# Development Record Index\n\n<!--\n이 파일은 개발 기록 탐색용 인덱스다.\n각 기록을 다음 형식으로 한 줄씩 추가한다.\n\n- [작업 제목](<파일명>.md) — 결과와 재사용 가치가 드러나는 한 줄 요약\n-->\n\n- [Git 저장소 및 Codex 로컬 하네스 설치](DEV-2026-001-codex-harness-installation.md) — public Git 저장소 연결, 하네스 설치, Unity batch mode 컴파일 검증을 완료했다.\n- [Unity 기반 패키지 스택 설치](DEV-2026-002-package-stack-installation.md) — NuGetForUnity, R3, UniTask, VContainer, Unity CLI Loop, UI Toolkit과 Localization을 설치·확인했다.\n- [Player 이동 Clean Architecture 세로 슬라이스](DEV-2026-003-player-walking-skeleton.md) — Player 이동·점프를 6계층과 VContainer로 조립하고 EditMode 8개·PlayMode 1개 테스트로 검증했다.\n- [계획과 개발 기록 정본 통합](DEV-2026-004-document-source-unification.md) — 별도 계획 문서를 없애고 승인 계획부터 완료 결과까지 DEV 기록 하나에서 관리하도록 하네스를 정리했다.\n- [커밋 메시지 규칙 하네스](DEV-2026-005-commit-message-policy-harness.md) — 한국어 개조식 제목·필수 본문·문단 간격 규칙을 Git commit-msg 훅으로 자동 검사한다.\n- [아키텍처 UML 정본과 구조 변경 게이트](DEV-2026-006-architecture-living-document.md) — 실제 asmdef와 Player 호출 경로를 Mermaid UML로 정본화하고 균형형 pre-commit 게이트로 구조 변경 시 동시 갱신을 강제한다.\n- [에셋 콘텐츠 구조와 출처 관리](DEV-2026-007-asset-content-structure.md) — 서드파티·생성형·게임 조립 에셋을 분리하고 원본 해시와 라이선스를 추적하는 간소화된 콘텐츠 구조를 준비한다.\n- [Unity VCS 증거 수집 하네스](DEV-2026-008-unity-vcs-evidence-harness.md) — 읽기 전용 공용 계층으로 Scene·Prefab Git 변경을 의미 단위 E1 증거로 수집하고 V0–V2 검증과 결합했다.\n- [Treasure Hunters 플레이 데모](DEV-2026-009-treasure-hunters-playable-demo.md) — Captain 10 FPS 이동과 Palm Tree Island를 연결하고 32 PPU·Pixel Perfect·분리된 시각 배율 및 A·D·Space 조작을 검증했다.\n- [GPT-6 Astra 하네스 마이그레이션](DEV-2026-010-astra-harness-migration.md) — B안으로 승인·검증 절차와 편집 알림을 정리하고 프로젝트 44개·템플릿 5개 테스트 및 Astra 비교를 완료했다.\n"
+                }
+              ]
+            }
+          },
+          "emittedAtMs": 1788577274101
+        },
+        {
+          "method": "hook/started",
+          "params": {
+            "threadId": "01a06f83-5222-7971-b528-45df494242b9",
+            "turnId": "01a06f83-5261-7000-99fb-b5f4fb709266",
+            "run": {
+              "id": "user-prompt-submit:4:/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "eventName": "userPromptSubmit",
+              "handlerType": "command",
+              "executionMode": "sync",
+              "scope": "turn",
+              "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "source": "project",
+              "displayOrder": 4,
+              "status": "running",
+              "statusMessage": "턴 카운터 갱신 중",
+              "startedAt": 1788577274,
+              "completedAt": null,
+              "durationMs": null,
+              "entries": []
+            }
+          },
+          "emittedAtMs": 1788577274101
+        },
+        {
+          "method": "hook/completed",
+          "params": {
+            "threadId": "01a06f83-5222-7971-b528-45df494242b9",
+            "turnId": "01a06f83-5261-7000-99fb-b5f4fb709266",
+            "run": {
+              "id": "user-prompt-submit:4:/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "eventName": "userPromptSubmit",
+              "handlerType": "command",
+              "executionMode": "sync",
+              "scope": "turn",
+              "sourcePath": "/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks.json",
+              "source": "project",
+              "displayOrder": 4,
+              "status": "completed",
+              "statusMessage": "턴 카운터 갱신 중",
+              "startedAt": 1788577274,
+              "completedAt": 1788577274,
+              "durationMs": 42,
+              "entries": []
+            }
+          },
+          "emittedAtMs": 1788577274143
+        }
+      ],
+      "modelAnswers": [
+        "YES"
+      ],
+      "toolCalls": [],
+      "turnCompleted": true
+    }
+  },
+  "indexExactContentVerified": true,
+  "tests": {
+    "before": {
+      "total": 5,
+      "failed": 4
+    },
+    "after": {
+      "total": 49,
+      "passed": 49
+    }
+  },
+  "files": {
+    ".codex/hooks/development-record-load.js": "883376ef876516644530fed43b76cee5ac570d5c65bca14213637c3c971014fb",
+    ".codex/hooks/harness-doctor.js": "c9125f1f0b1a8728ebfbb574df1e18c4b9b4e6c8f19a4236227e4dd87d7d8e40",
+    ".codex/hooks/tests/session-start-output.test.js": "ff1aa461dd8e89fbe2a25feca7c7b9bfedd4af8853349a1e9ffacedb867469c1"
+  }
+}

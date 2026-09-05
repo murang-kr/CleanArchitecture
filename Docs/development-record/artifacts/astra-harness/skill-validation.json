@@ -1,0 +1,5 @@
+{
+  "method": "Ruby YAML and equivalent frontmatter/name/description/placeholder checks; Python validator unavailable because PyYAML is absent",
+  "skills": 17,
+  "result": "PASS"
+}

@@ -1,0 +1,55 @@
+{
+  "project": {
+    "javascriptSyntaxPassed": 14,
+    "registeredHookCommands": 5,
+    "testSummary": "ℹ tests 44\nℹ suites 0\nℹ pass 44\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 214.149417",
+    "changedPaths": [
+      "AGENTS.md",
+      ".agents/skills/evidence-analysis/SKILL.md",
+      ".agents/skills/invariant-audit/SKILL.md",
+      ".agents/skills/plan-gate/SKILL.md",
+      ".agents/skills/socratic-interview/SKILL.md",
+      ".agents/skills/unity-so-readout/SKILL.md",
+      ".agents/skills/verifier/SKILL.md",
+      ".codex/harness-bindings.json",
+      ".codex/hooks.json",
+      ".codex/hooks/ambiguity-check.md",
+      ".codex/hooks/edit-loop-guard.js",
+      ".codex/hooks/inject-work-gate.js",
+      ".codex/hooks/tests/edit-loop-guard.test.js",
+      "Docs/Development-Record-Format.md",
+      "Docs/Tech-Stack.md",
+      "Docs/development-record/DEV-2026-010-astra-harness-migration.md",
+      "Docs/development-record/Index.md"
+    ]
+  },
+  "template": {
+    "javascriptSyntaxPassed": 6,
+    "registeredHookCommands": 5,
+    "testSummary": "ℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 64.945792",
+    "changedPaths": [
+      "AGENTS.md",
+      ".agents/skills/evidence-analysis/SKILL.md",
+      ".agents/skills/invariant-audit/SKILL.md",
+      ".agents/skills/plan-gate/SKILL.md",
+      ".agents/skills/socratic-interview/SKILL.md",
+      ".agents/skills/unity-so-readout/SKILL.md",
+      ".agents/skills/verifier/SKILL.md",
+      ".codex/hooks.json",
+      ".codex/hooks/ambiguity-check.md",
+      ".codex/hooks/edit-loop-guard.js",
+      ".codex/hooks/inject-work-gate.js",
+      ".codex/hooks/tests/edit-loop-guard.test.js",
+      "Docs/Development-Record-Format.md",
+      "Docs/Tech-Stack.md"
+    ]
+  },
+  "preservedGameFiles": 4182,
+  "preservedContracts": true,
+  "projectDoctor": "no warnings",
+  "finalRecordLinks": "PASS",
+  "existingDev009": "preserved",
+  "existingUnityOracleCommands": "preserved",
+  "gitDiffCheck": "PASS",
+  "gitHooks": "unchanged"
+}

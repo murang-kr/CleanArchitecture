@@ -1,0 +1,27 @@
+[
+  {
+    "case": "status",
+    "expectedDeny": false,
+    "actualDeny": false
+  },
+  {
+    "case": "commit",
+    "expectedDeny": true,
+    "actualDeny": true
+  },
+  {
+    "case": "push",
+    "expectedDeny": true,
+    "actualDeny": true
+  },
+  {
+    "case": "prose",
+    "expectedDeny": false,
+    "actualDeny": false
+  },
+  {
+    "case": "nested",
+    "expectedDeny": true,
+    "actualDeny": true
+  }
+]

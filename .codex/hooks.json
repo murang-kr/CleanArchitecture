@@ -1,5 +1,5 @@
 {
-  "description": "프로젝트 로컬 Codex 하네스 — 작업 게이트, 개발 기록 인덱스, 편집 루프 가드, git 컨펌 게이트, 하네스 닥터.",
+  "description": "프로젝트 로컬 Codex 하네스 — 개발 기록 인덱스, 편집 참고 알림, git 컨펌 게이트, 하네스 닥터.",
   "hooks": {
     "SessionStart": [
       {
@@ -22,12 +22,6 @@
     "UserPromptSubmit": [
       {
         "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/inject-work-gate.js\"",
-            "timeout": 10,
-            "statusMessage": "작업 게이트 주입 중"
-          },
           {
             "type": "command",
             "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/edit-loop-turn-bump.js\"",
@@ -58,7 +52,7 @@
             "type": "command",
             "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/edit-loop-guard.js\"",
             "timeout": 10,
-            "statusMessage": "편집 루프 가드 확인 중"
+            "statusMessage": "편집 참고 알림 확인 중"
           }
         ]
       }

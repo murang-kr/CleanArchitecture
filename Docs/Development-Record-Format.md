@@ -5,6 +5,8 @@ status: planned
 verification_tier:
 plan_review: pending
 date: YYYY-MM-DD
+approval_required:
+authorization_basis:
 approved_at:
 completed_at:
 unity_version:
@@ -14,9 +16,9 @@ related_commit:
 tags: []
 ---
 
-> 이 문서는 승인된 계획, 실행 기록, 검증, 최종 결과를 함께 관리하는 단일 정본이다. 별도 계획 문서를 만들지 않는다.
+> 이 문서는 작업 계획, 실행 기록, 검증, 최종 결과를 함께 관리하는 단일 정본이다. 별도 계획 문서를 만들지 않는다.
 >
-> `status`는 `planned → approved → in_progress → completed` 순서로 갱신한다. 진행을 멈춰야 하면 `blocked`와 재개 조건을 기록한다. `plan_review`는 `pending`, `okay`, `blocked`, `not_required` 중 하나를 사용한다.
+> `status`는 별도 승인이 필요하면 `planned → approved → in_progress → completed`, 명확한 요청 범위의 자율 작업이면 `in_progress → completed`로 갱신한다. `approval_required`와 `authorization_basis`에 승인 필요 여부와 요청·승인 근거를 기록한다. 자율 착수를 별도 계획 승인으로 기록하지 않는다. 진행을 멈춰야 하면 `blocked`와 재개 조건을 기록한다. `plan_review`는 `pending`, `okay`, `blocked`, `not_required` 중 하나를 사용한다.
 
 # 목표
 
@@ -38,7 +40,7 @@ tags: []
 
 # 계획
 
-1. 실행 전 승인받을 구현 순서
+1. 실행할 순서와 별도 사용자 결정이 필요한 지점
 2. 조사하거나 변경할 순서
 3. 각 단계의 완료 기준
 
@@ -70,8 +72,8 @@ tags: []
 
 ## 검증 계획
 
-- 증거 티어와 하향 금지 조건
-- 실행할 컴파일·테스트·로그 명령
+- 변경 위험에 맞는 V0–V2와 필요한 관측 범위. Unity 상태 주장은 E1–E4를 구분
+- 변경 대상에 맞는 검증 명령: 문서 형식·링크, Node 구문·테스트, Unity 컴파일·관련 테스트 중 필요한 항목
 - 요구사항별 자동 검증 방법
 
 ## 사람 검수 항목
@@ -126,7 +128,10 @@ tags: []
 
 # 검증
 
-- 실행한 테스트
+- 실행 명령·대상·결과와 원본 출력 링크
+- 재사용한 이번 작업의 증거와 이후 관련 코드·환경 변경 여부
+- 재실행한 항목과 그 이유
+- 요구사항별 증거 매핑(여러 요구사항이 있는 작업)
 - 예상 결과와 실제 결과
 - 빌드, 스크린샷, 프로파일링 결과 링크
 - 검증하지 못한 항목

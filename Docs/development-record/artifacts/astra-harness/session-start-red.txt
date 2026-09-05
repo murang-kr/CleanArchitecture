@@ -1,0 +1,65 @@
+✖ 인덱스와 특수문자를 SessionStart JSON 문맥으로 손실 없이 전달한다 (1.406583ms)
+✖ 인덱스가 없어도 안내는 유효한 SessionStart JSON이다 (0.262791ms)
+✖ 포맷 누락 경고도 인덱스와 함께 전달한다 (0.240333ms)
+✔ 로더의 파일 읽기 오류는 작업을 차단하지 않는다 (0.254542ms)
+✖ 닥터는 정상일 때 무출력, 경고가 있으면 유효한 SessionStart JSON이다 (0.594792ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 1
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 62.746584
+
+✖ failing tests:
+
+test at .codex/hooks/tests/session-start-output.test.js:44:1
+✖ 인덱스와 특수문자를 SessionStart JSON 문맥으로 손실 없이 전달한다 (1.406583ms)
+  SyntaxError: Unexpected token 'd', "[developmen"... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at context (/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks/tests/session-start-output.test.js:38:23)
+      at TestContext.<anonymous> (/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks/tests/session-start-output.test.js:45:13)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)
+
+test at .codex/hooks/tests/session-start-output.test.js:47:1
+✖ 인덱스가 없어도 안내는 유효한 SessionStart JSON이다 (0.262791ms)
+  SyntaxError: Unexpected token 'd', "[developmen"... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at context (/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks/tests/session-start-output.test.js:38:23)
+      at TestContext.<anonymous> (/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks/tests/session-start-output.test.js:48:16)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+
+test at .codex/hooks/tests/session-start-output.test.js:50:1
+✖ 포맷 누락 경고도 인덱스와 함께 전달한다 (0.240333ms)
+  SyntaxError: Unexpected token 'd', "[developmen"... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at context (/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks/tests/session-start-output.test.js:38:23)
+      at TestContext.<anonymous> (/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks/tests/session-start-output.test.js:51:16)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at .codex/hooks/tests/session-start-output.test.js:56:1
+✖ 닥터는 정상일 때 무출력, 경고가 있으면 유효한 SessionStart JSON이다 (0.594792ms)
+  SyntaxError: Unexpected token 'h', "[harness-do"... is not valid JSON
+      at JSON.parse (<anonymous>)
+      at context (/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks/tests/session-start-output.test.js:38:23)
+      at TestContext.<anonymous> (/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks/tests/session-start-output.test.js:58:16)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)

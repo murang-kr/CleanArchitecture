@@ -1,0 +1,18 @@
+[
+  {
+    "variant": "before",
+    "guide": "# 사용 안내\n\n테스트 명령을 실행한다.\n결과를 기록한다.\n",
+    "sum": "function sum(values) { return values.reduce((a, b) => a + b, 0); }\nmodule.exports = { sum };\n",
+    "testsUnchanged": true,
+    "assetUnchanged": true,
+    "publicModuleFilesAbsent": true
+  },
+  {
+    "variant": "after",
+    "guide": "# 사용 안내\n\n테스트 명령을 실행한다.\n결과를 기록한다.\n",
+    "sum": "function sum(values) { return values.reduce((a, b) => a + b, 0); }\nmodule.exports = { sum };\n",
+    "testsUnchanged": true,
+    "assetUnchanged": true,
+    "publicModuleFilesAbsent": true
+  }
+]

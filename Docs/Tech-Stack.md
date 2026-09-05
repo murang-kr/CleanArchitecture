@@ -144,7 +144,7 @@ Unity 패키지는 `Packages/manifest.json`에 3.2.1 태그로 고정되어 있�
 
 ## 검증 기준
 
-이 프로젝트의 변경은 아래 두 명령으로 검증한다. `harness-bindings.json`에도 동일하게 정의돼 있다.
+Unity 코드·에셋에 영향을 주는 변경은 실행 중 Editor에서 아래 명령으로 검증한다. `.codex/harness-bindings.json`의 `compile`·`test`는 별도 batch mode 명령이며 동일 명령이 아니다. GUI Editor가 같은 프로젝트를 열고 있으면 batch mode가 충돌할 수 있으므로 사용 가능한 실행 경로를 선택한다.
 
 ```bash
 uloop compile
@@ -193,3 +193,14 @@ node .agents/skills/unity-vcs-evidence/scripts/unity-vcs-evidence.js explain Ass
 E1–E4 관측 계층은 증거가 본 상태와 주장 상한을 뜻하고, V0–V2는 작업 위험에 따른 완료 검증량을 뜻한다. 따라서 둘 중 하나를 고르는 것이 아니라 같은 작업에서 함께 기록한다. `unity vcs`만으로 현재 Editor 메모리나 런타임 효과를 주장하지 않는다.
 
 Unity Pipeline 패키지는 이 도입 범위에 포함하지 않는다. `unity vcs`는 독립된 Unity CLI 계층으로 사용하며, Pipeline의 Editor 명령 실행 기능 없이도 저장 변경 증거 수집 목적을 충족한다.
+
+## 하네스·문서 검증
+
+AGENTS.md·스킬·Node 훅만 바뀌면 Unity 컴파일을 일괄 실행하지 않는다. 문서는 형식·로컬 참조를 검사하고, 훅 로직은 Node 구문 검사와 관련 테스트로 검증한다. 새 변경·실패·미해결 우려가 없으면 통과한 검사를 반복하지 않는다.
+
+```bash
+node --check .codex/hooks/edit-loop-guard.js
+node --test .codex/hooks/tests/*.test.js .agents/skills/unity-vcs-evidence/scripts/unity-vcs-evidence.test.js
+```
+
+두 번째 명령은 `.codex/harness-bindings.json`의 `oracle.harness`다. Node 테스트 통과는 실제 Codex 앱의 훅 로딩·신뢰 승인이나 Unity Editor 동작을 증명하지 않는다.

@@ -87,7 +87,12 @@ try {
   }
 
   if (warnings.length) {
-    console.log(`[harness-doctor] ${warnings.join(' / ')}. 필요한 작업 전에 사용자에게 알려라.`);
+    process.stdout.write(JSON.stringify({
+      hookSpecificOutput: {
+        hookEventName: 'SessionStart',
+        additionalContext: `[harness-doctor] ${warnings.join(' / ')}. 필요한 작업 전에 사용자에게 알려라.`
+      }
+    }));
   }
 } catch {}
 process.exit(0);

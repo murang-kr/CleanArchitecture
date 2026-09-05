@@ -1,0 +1,63 @@
+✖ 서로 다른 세 턴의 편집은 도구 결과를 차단하지 않는 참고 문맥만 반환한다 (2.288584ms)
+✔ 같은 턴의 반복 호출을 반복 실패라고 판정하지 않는다 (0.821459ms)
+✖ 스킬·설정·훅·임시 파일은 편집 알림에서 제외한다 (1.458458ms)
+✔ 파일과 세션별 편집 횟수가 섞이지 않는다 (0.995792ms)
+✔ 잘못된 입력과 비편집 도구는 조용히 종료한다 (0.402083ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 3
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 66.204333
+
+✖ failing tests:
+
+test at .codex/hooks/tests/edit-loop-guard.test.js:46:1
+✖ 서로 다른 세 턴의 편집은 도구 결과를 차단하지 않는 참고 문맥만 반환한다 (2.288584ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'block'
+  - undefined
+
+      at TestContext.<anonymous> (/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks/tests/edit-loop-guard.test.js:51:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'block',
+    expected: undefined,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at .codex/hooks/tests/edit-loop-guard.test.js:64:1
+✖ 스킬·설정·훅·임시 파일은 편집 알림에서 제외한다 (1.458458ms)
+  AssertionError [ERR_ASSERTION]: .agents/skills/example/SKILL.md
+  + actual - expected
+
+  + {
+  +   decision: 'block',
+  +   reason: '[edit-loop guard] 이 파일을 서로 다른 3개 턴에서 수정했다: .agents/skills/example/SKILL.md\n' +
+  +     '발산(같은 문제를 반복 패치) 가능성이 있다. 다음 수정을 시도하기 전에 .agents/skills/invariant-audit/SKILL.md를 읽고 그 절차(면제 판정 포함)를 따르고, 끝나면 원래 작업으로 복귀하라.'
+  + }
+  - null
+
+      at TestContext.<anonymous> (/Users/murang/Developer/Unity/CleanArchitecture/.codex/hooks/tests/edit-loop-guard.test.js:67:42)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { decision: 'block', reason: '[edit-loop guard] 이 파일을 서로 다른 3개 턴에서 수정했다: .agents/skills/example/SKILL.md\n발산(같은 문제를 반복 패치) 가능성이 있다. 다음 수정을 시도하기 전에 .agents/skills/invariant-audit/SKILL.md를 읽고 그 절차(면제 판정 포함)를 따르고, 끝나면 원래 작업으로 복귀하라.' },
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
