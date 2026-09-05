@@ -22,7 +22,12 @@ Assets/
 ├─ Content/
 │  ├─ ThirdParty/         # 제작자·배포 팩별 외부 런타임 원재료
 │  ├─ Generated/          # 생성형 런타임 원재료
-│  └─ Game/               # Prefab·Animator·Material 등 게임 조립 에셋
+│  └─ Game/               # 게임이 소유하는 조립 에셋
+│     ├─ Environment/
+│     │  └─ Tiles/        # Palm Tree Island 데모 Tile
+│     └─ Player/
+│        ├─ Animations/   # 10 FPS 이동 AnimationClip
+│        └─ Animator/     # Captain 이동 상태 머신
 ├─ Feature/
 │  └─ Player/
 │     ├─ Domain/          # 순수 이동 규칙과 값 객체

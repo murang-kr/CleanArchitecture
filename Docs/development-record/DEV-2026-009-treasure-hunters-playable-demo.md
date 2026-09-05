@@ -44,7 +44,8 @@ Architecture.md와 에셋 출처 문서는 각 단계의 실제 구조·사용 �
 | 단계 | 반영 내용 | 상태 |
 |---|---|---|
 | 1 | 스크린샷 7개 로컬 이동·Git 제외·공용 기록 정책 | f06a29e 완료 |
-| 2 | ThirdParty PPU 32·Point·무압축·mipmap 해제·NPOT 원본 유지 | 이 커밋에 포함 |
+| 2 | ThirdParty PPU 32·Point·무압축·mipmap 해제·NPOT 원본 유지 | a52a5db 완료 |
+| 3 | 10 FPS AnimationClip 5개·Animator 1개·Tile 3개와 .meta | 이 커밋에 포함 |
 
 # 변경 내용
 
@@ -60,11 +61,20 @@ Architecture.md와 에셋 출처 문서는 각 단계의 실제 구조·사용 �
 - 스크린샷 7개는 로컬에서 보존되며 Git 제외 규칙을 유지한다.
 - staged 범위·whitespace·Architecture 문서 검사와 Git 커밋 훅으로 포함 범위를 검증한다.
 
+## 게임 조립 에셋
+
+- `Assets/Content/Game/Player/Animations/`에 Idle·Run·Jump·Fall·Land 5개 AnimationClip을 10 FPS로 구성한다.
+- `Assets/Content/Game/Player/Animator/CaptainLocomotion.controller`로 이동 상태 머신을 구성한다.
+- `Assets/Content/Game/Environment/Tiles/`에 Palm Ground 좌·중·우 Tile 3개를 둔다.
+- 원재료는 ThirdParty에 유지하고 조립 에셋 및 파일·폴더 메타데이터 21개를 함께 포함한다.
+- AnimationClip의 10 FPS와 AnimationClip·Controller의 외부 GUID가 존재함을 정적으로 확인했다. 이 단계는 씬 연결이나 전체 플레이 동작을 새로 검증했다는 뜻이 아니다.
+
 # 최종 결과
 
-에셋 임포트 기반을 반영했다. 조립 에셋·Player 표현 로직·씬 통합은 뒤의 커밋으로 분리한다.
+에셋 임포트 기반과 게임 조립 에셋을 반영했다. Player 표현 로직·씬 통합은 뒤의 커밋으로 분리한다.
 
 # 후속 작업
 
-- [ ] 게임 조립 에셋과 Player 표현 로직의 승인된 커밋을 순서대로 진행한다.
+- [x] 게임 조립 에셋을 커밋한다.
+- [ ] Player 표현 로직의 승인된 커밋을 진행한다.
 - [ ] 5번 씬 통합·PlayMode·최종 기록 커밋은 별도 승인을 받는다.
