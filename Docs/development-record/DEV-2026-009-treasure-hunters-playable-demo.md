@@ -45,7 +45,8 @@ Architecture.md와 에셋 출처 문서는 각 단계의 실제 구조·사용 �
 |---|---|---|
 | 1 | 스크린샷 7개 로컬 이동·Git 제외·공용 기록 정책 | f06a29e 완료 |
 | 2 | ThirdParty PPU 32·Point·무압축·mipmap 해제·NPOT 원본 유지 | a52a5db 완료 |
-| 3 | 10 FPS AnimationClip 5개·Animator 1개·Tile 3개와 .meta | 이 커밋에 포함 |
+| 3 | 10 FPS AnimationClip 5개·Animator 1개·Tile 3개와 .meta | 44ccbbd 완료 |
+| 4 | Player 표시 상태·Animator 연결·EditMode 테스트 | 이 커밋에 포함 |
 
 # 변경 내용
 
@@ -69,12 +70,22 @@ Architecture.md와 에셋 출처 문서는 각 단계의 실제 구조·사용 �
 - 원재료는 ThirdParty에 유지하고 조립 에셋 및 파일·폴더 메타데이터 21개를 함께 포함한다.
 - AnimationClip의 10 FPS와 AnimationClip·Controller의 외부 GUID가 존재함을 정적으로 확인했다. 이 단계는 씬 연결이나 전체 플레이 동작을 새로 검증했다는 뜻이 아니다.
 
+## Player 표현 로직
+
+- `PlayerViewState`에 JustLanded를 추가하고 Presenter에서 공중→접지 전환에만 한 번 전달한다.
+- `PlayerVisualView`가 방향 반전과 Animator의 속도·접지·착지 파라미터를 갱신한다. AnimatorController가 없으면 애니메이션 처리는 건너뛴다.
+- EditMode 테스트 어셈블리에 Presentation 참조를 추가하고 착지 신호의 일회성 전달을 회귀 검사한다.
+- `uloop run-tests --test-mode EditMode --filter-type assembly --filter-value CleanArchitecture.Player.EditModeTests --unsaved-changes fail`: 2026-09-05 14:11 선행 컴파일 성공, 8/8 통과, Fail·Skip 0.
+- 검사 시작 때 Unity의 외부 씬 변경 알림이 컴파일 응답을 막았다. 현재 메모리 상태를 보존하는 Ignore로 알림만 닫고 같은 검사 요청이 완료되는 것을 확인했다.
+- 검사는 현재 작업 디렉터리에서 수행했으며 다른 커밋의 씬 변경을 빌드 검증한 것으로 주장하지 않는다. Scene·PlayMode 파일은 이 커밋에서 제외한다.
+- 기존 모터의 방향을 구분하지 않는 접지 판정은 수정하지 않았다.
+
 # 최종 결과
 
-에셋 임포트 기반과 게임 조립 에셋을 반영했다. Player 표현 로직·씬 통합은 뒤의 커밋으로 분리한다.
+에셋 임포트 기반·게임 조립 에셋·Player 표현 로직을 순서대로 반영했다. 씬 통합과 PlayMode 회귀 검사 및 최종 기록은 5번 커밋으로 남긴다.
 
 # 후속 작업
 
 - [x] 게임 조립 에셋을 커밋한다.
-- [ ] Player 표현 로직의 승인된 커밋을 진행한다.
+- [x] Player 표현 로직의 승인된 커밋을 진행한다.
 - [ ] 5번 씬 통합·PlayMode·최종 기록 커밋은 별도 승인을 받는다.

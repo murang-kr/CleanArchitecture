@@ -3,14 +3,17 @@ using UnityEngine;
 
 namespace CleanArchitecture.Player.View
 {
-    [RequireComponent(typeof(SpriteRenderer))]
+    [RequireComponent(typeof(SpriteRenderer), typeof(Animator))]
     public sealed class PlayerVisualView : MonoBehaviour
     {
+        private static readonly int HorizontalSpeedHash = Animator.StringToHash("HorizontalSpeed");
+        private static readonly int VerticalSpeedHash = Animator.StringToHash("VerticalSpeed");
+        private static readonly int IsGroundedHash = Animator.StringToHash("IsGrounded");
+        private static readonly int LandHash = Animator.StringToHash("Land");
         private static Sprite _placeholderSprite;
 
         [SerializeField] private SpriteRenderer spriteRenderer;
-        [SerializeField] private Color groundedColor = new Color(0.12f, 0.82f, 0.92f, 1f);
-        [SerializeField] private Color airborneColor = new Color(1f, 0.78f, 0.18f, 1f);
+        [SerializeField] private Animator animator;
 
         private PlayerPresenter _presenter;
 
@@ -49,7 +52,21 @@ namespace CleanArchitecture.Player.View
         {
             EnsureRenderer();
             spriteRenderer.flipX = state.FacingDirection < 0;
-            spriteRenderer.color = state.IsGrounded ? groundedColor : airborneColor;
+            spriteRenderer.color = Color.white;
+
+            if (animator == null || animator.runtimeAnimatorController == null)
+            {
+                return;
+            }
+
+            animator.SetFloat(HorizontalSpeedHash, Mathf.Abs(state.HorizontalSpeed));
+            animator.SetFloat(VerticalSpeedHash, state.VerticalSpeed);
+            animator.SetBool(IsGroundedHash, state.IsGrounded);
+
+            if (state.JustLanded)
+            {
+                animator.SetTrigger(LandHash);
+            }
         }
 
         private void EnsureRenderer()
@@ -59,7 +76,13 @@ namespace CleanArchitecture.Player.View
                 spriteRenderer = GetComponent<SpriteRenderer>();
             }
 
-            if (spriteRenderer.sprite == null)
+            if (animator == null)
+            {
+                animator = GetComponent<Animator>();
+            }
+
+            if (spriteRenderer.sprite == null &&
+                (animator == null || animator.runtimeAnimatorController == null))
             {
                 spriteRenderer.sprite = GetPlaceholderSprite();
             }

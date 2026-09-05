@@ -4,7 +4,7 @@
 >
 > 최종 코드 검증일: 2026-09-05<br>
 > Unity 버전: 6000.3.20f1<br>
-> 현재 구현 범위: Player 수평 이동과 접지 점프 세로 슬라이스
+> 현재 구현 범위: Player 수평 이동·접지 점프와 Animator 표현 코드, 게임 조립 에셋
 
 ## 문서 원칙
 
@@ -123,13 +123,15 @@ flowchart LR
 |---|---|---|---|
 | `Player.Domain` | 이동 상태·의도·설정·결정과 순수 판정 규칙 | 없음 | 예 |
 | `Player.Application` | 이동 유스케이스와 `IPlayerMotor`, `IPlayerMotionSettings` 포트 | `Player.Domain` | 예 |
-| `Player.Presentation` | 표시 상태 생성과 View 알림 | `Player.Application` | 예 |
+| `Player.Presentation` | 이동 결과·착지 순간을 표시 상태로 변환하고 View에 알림 | `Player.Application` | 예 |
 | `Player.Infrastructure` | Rigidbody2D 모터와 설정 ScriptableObject | `Player.Application`, `Player.Domain` | 아니요 |
-| `Player.View` | Input System 입력 수집과 SpriteRenderer 표시 | `Player.Presentation`, `Unity.InputSystem` | 아니요 |
+| `Player.View` | Input System 입력 수집과 SpriteRenderer·Animator 표시 | `Player.Presentation`, `Unity.InputSystem` | 아니요 |
 | `Player.Installer` | Player 객체 등록과 View 초기화 | 모든 Player 계층, `VContainer` | 아니요 |
 | `Core.Installer` | 씬 참조 검증과 루트 DI 조립 | `Player.Infrastructure`, `Player.View`, `Player.Installer`, `VContainer` | 아니요 |
 
 `Player.Domain`, `Player.Application`, `Player.Presentation`은 asmdef의 `noEngineReferences: true`로 Unity API 직접 사용을 컴파일 단계에서 차단한다.
+
+테스트 어셈블리는 런타임 의존 그래프에 포함하지 않는다. 현재 `CleanArchitecture.Player.EditModeTests`는 `Player.Domain`, `Player.Application`, `Player.Presentation`을 직접 참조해 순수 이동 규칙·유스케이스와 Presenter의 착지 pulse를 검증한다. `CleanArchitecture.Player.PlayModeTests`는 기존 씬의 Player 조립과 접지 점프를 검증한다. Tilemap·Animator를 포함한 데모 씬 회귀 검사는 별도 씬 통합 커밋에 반영한다.
 
 ## Player 주요 타입 UML
 
@@ -162,6 +164,14 @@ classDiagram
         +ViewStateChanged
     }
 
+    class PlayerViewState {
+        +HorizontalSpeed float
+        +VerticalSpeed float
+        +IsGrounded bool
+        +JustLanded bool
+        +FacingDirection int
+    }
+
     class Rigidbody2DPlayerMotor {
         +ReadState() PlayerMotionState
         +Apply(PlayerMotionDecision)
@@ -177,6 +187,8 @@ classDiagram
 
     class PlayerVisualView {
         +Initialize(PlayerPresenter)
+        -SpriteRenderer spriteRenderer
+        -Animator animator
     }
 
     class PlayerInstaller {
@@ -194,8 +206,10 @@ classDiagram
     UpdatePlayerMotionUseCase --> IPlayerMotor
     UpdatePlayerMotionUseCase --> IPlayerMotionSettings
     PlayerPresenter --> UpdatePlayerMotionUseCase
+    PlayerPresenter --> PlayerViewState : create
     PlayerInputView --> PlayerPresenter
     PlayerVisualView --> PlayerPresenter
+    PlayerVisualView --> PlayerViewState : render
     PlayerInstaller ..> PlayerMotionRules : register
     PlayerInstaller ..> UpdatePlayerMotionUseCase : register
     PlayerInstaller ..> PlayerPresenter : register
@@ -232,11 +246,14 @@ sequenceDiagram
     UseCase-->>Presenter: PlayerMotionResult
     opt PlayerViewState가 변경됨
         Presenter-->>Visual: ViewStateChanged
-        Visual->>Visual: 방향 반전과 접지 색상 표시
+        Visual->>Visual: 방향 반전과 Animator 파라미터 갱신
+        opt JustLanded
+            Visual->>Visual: Land trigger 1회 설정
+        end
     end
 ```
 
-`PlayerInputView.Update`는 입력을 수집하고 점프를 큐에 보관한다. 물리 상태 변경은 `FixedUpdate`에서 시작되며, Domain의 `PlayerMotionRules`가 속도와 점프 가능 여부를 결정한다. Infrastructure는 결정을 Rigidbody2D에 적용하고, Presentation은 결과를 `PlayerViewState`로 바꿔 View에 알린다.
+`PlayerInputView.Update`는 입력을 수집하고 점프를 큐에 보관한다. 물리 상태 변경은 `FixedUpdate`에서 시작되며, Domain의 `PlayerMotionRules`가 속도와 점프 가능 여부를 결정한다. Infrastructure는 결정을 Rigidbody2D에 적용하고, Presentation은 결과를 `PlayerViewState`로 바꿔 View에 알린다. `PlayerPresenter`는 직전 공중 상태에서 접지 상태로 바뀐 순간만 `JustLanded`로 표시하며, `PlayerVisualView`는 이동 속도·수직 속도·접지 여부·착지 pulse를 `CaptainLocomotion.controller`에 전달한다. AnimationClip은 에셋 페이지 기준 10 FPS를 사용한다. AnimatorController가 할당되지 않은 기존 씬에서는 표현 갱신을 건너뛰며, 데모 씬의 시각 자식과 Controller 참조 연결은 후속 씬 통합 커밋에 반영한다.
 
 ## Composition root
 
@@ -302,11 +319,13 @@ Core.Installer ─▶ Feature Installer와 씬 어댑터
 | 입력 진입점 | [`PlayerInputView.cs`](../Assets/Feature/Player/View/PlayerInputView.cs) |
 | 표시 갱신 | [`PlayerVisualView.cs`](../Assets/Feature/Player/View/PlayerVisualView.cs) |
 | Presentation 상태 변환 | [`PlayerPresenter.cs`](../Assets/Feature/Player/Presentation/PlayerPresenter.cs) |
+| 표시 상태 값 | [`PlayerViewState.cs`](../Assets/Feature/Player/Presentation/PlayerViewState.cs) |
 | Application 유스케이스 | [`UpdatePlayerMotionUseCase.cs`](../Assets/Feature/Player/Application/UpdatePlayerMotionUseCase.cs) |
 | 외부 포트 | [`IPlayerMotor.cs`](../Assets/Feature/Player/Application/IPlayerMotor.cs) |
 | 순수 이동 판정 | [`PlayerMotionRules.cs`](../Assets/Feature/Player/Domain/PlayerMotionRules.cs) |
 | Physics2D 구현 | [`Rigidbody2DPlayerMotor.cs`](../Assets/Feature/Player/Infrastructure/Rigidbody2DPlayerMotor.cs) |
 | 설정 구현 | [`PlayerMovementSettings.cs`](../Assets/Feature/Player/Infrastructure/PlayerMovementSettings.cs) |
+| Captain Animator | [`CaptainLocomotion.controller`](../Assets/Content/Game/Player/Animator/CaptainLocomotion.controller) |
 
 어셈블리 직접 참조의 최종 근거는 각 계층의 `.asmdef` 파일이다. 산문이나 다이어그램이 실제 코드와 다르면 asmdef와 실행 코드를 먼저 확인하고 이 문서를 수정한다.
 

@@ -16,4 +16,4 @@
 - [에셋 콘텐츠 구조와 출처 관리](DEV-2026-007-asset-content-structure.md) — 서드파티·생성형·게임 조립 에셋을 분리하고 원본 해시와 라이선스를 추적하는 간소화된 콘텐츠 구조를 준비한다.
 - [Unity VCS 증거 수집 하네스](DEV-2026-008-unity-vcs-evidence-harness.md) — 읽기 전용 공용 계층으로 Scene·Prefab Git 변경을 의미 단위 E1 증거로 수집하고 V0–V2 검증과 결합했다.
 - [GPT-6 Astra 하네스 마이그레이션](DEV-2026-010-astra-harness-migration.md) — B안 절차 정리와 Astra 비교 후 SessionStart 출력 파싱 실패를 수정하고 프로젝트 테스트 49개·첫 턴 인덱스 수신을 검증했다.
-- [Treasure Hunters 플레이 데모](DEV-2026-009-treasure-hunters-playable-demo.md) — PPU 32 임포트 기반과 게임 조립 에셋을 반영하고 Player 표현 로직·씬을 분리 커밋 중이다.
+- [Treasure Hunters 플레이 데모](DEV-2026-009-treasure-hunters-playable-demo.md) — PPU 32 임포트·게임 조립 에셋·Player 표현 로직을 반영하고 EditMode 8개를 검증했으며 씬 통합 커밋은 대기 중이다.

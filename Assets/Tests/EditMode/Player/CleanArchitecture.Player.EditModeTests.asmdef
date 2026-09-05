@@ -3,7 +3,8 @@
   "rootNamespace": "CleanArchitecture.Player.Tests.EditMode",
   "references": [
     "CleanArchitecture.Player.Domain",
-    "CleanArchitecture.Player.Application"
+    "CleanArchitecture.Player.Application",
+    "CleanArchitecture.Player.Presentation"
   ],
   "includePlatforms": [
     "Editor"

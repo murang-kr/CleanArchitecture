@@ -8,7 +8,8 @@ namespace CleanArchitecture.Player.Presentation
         private const float DirectionDeadZone = 0.0001f;
 
         private readonly UpdatePlayerMotionUseCase _updatePlayerMotion;
-        private PlayerViewState _viewState = new PlayerViewState(0f, 0f, false, 1);
+        private PlayerViewState _viewState = new PlayerViewState(0f, 0f, false, false, 1);
+        private bool _hasMotionSample;
 
         public PlayerPresenter(UpdatePlayerMotionUseCase updatePlayerMotion)
         {
@@ -25,11 +26,14 @@ namespace CleanArchitecture.Player.Presentation
                 new PlayerMotionInput(horizontalInput, jumpPressed),
                 deltaTime);
             var facingDirection = ResolveFacingDirection(horizontalInput, _viewState.FacingDirection);
+            var justLanded = _hasMotionSample && !_viewState.IsGrounded && result.IsGrounded;
             var nextState = new PlayerViewState(
                 result.HorizontalVelocity,
                 result.VerticalVelocity,
                 result.IsGrounded,
+                justLanded,
                 facingDirection);
+            _hasMotionSample = true;
 
             if (nextState.Equals(_viewState))
             {
